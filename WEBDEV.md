@@ -1,4 +1,5 @@
-#Node JS
+# Node JS
+```
 npm i -s express mongoose cors dotenv debug
 npm init
 
@@ -9,10 +10,12 @@ node_modules
 package.json
 "type": "module",
 
-node server.js 
+node server.js
+```
 
 
-#Vite
+# Vite
+```
 npm create vite@latest
 cd dirName
 npm i
@@ -26,9 +29,11 @@ npm i -s @mui/icons-material
 npm i -s react-redux @reduxjs/toolkit
 npm i -s i18next react-i18next i18next-http-backend
 npm install -s react-router-dom localforage match-sorter sort-by
+```
 
 
-#PWA Config => Installable Web App
+# PWA Config => Installable Web App
+```
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-pl'
@@ -67,3 +72,4 @@ export default defineConfig({
     }})
     ],
 })
+```

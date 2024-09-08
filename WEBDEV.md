@@ -1,4 +1,6 @@
 # Node JS
+- JS Runtime Environment
+
 ```
 npm i -s express mongoose cors dotenv debug
 npm init
@@ -15,6 +17,7 @@ node server.js
 
 
 # Vite
+- Build Tool
 ```
 npm create vite@latest
 cd dirName
@@ -98,3 +101,27 @@ export default {
     ],
 }
 ```
+
+# Setting Up React Manually Without create-react-app (include only the part we need)
+
+- Command
+```
+npm init
+npm install react@18 react-dom@18.2 react-scripts@5.0
+```
+
+- Scripts
+```
+    "dev": "react-scripts start",
+    "build": "react-scripts build"
+```
+npm create = alias of init
+react cant use if, for, while
+uses virtual dom -> knows which part to re-render
+we can save and retrieve items from window.localStorage **String only
+localStorage.setItem('name', item)
+localStorage.getItem('name')
+localStorage.removeItem('name')
+
+?? nullish coalescing op
+iftrueandnotnull ?? dosth;

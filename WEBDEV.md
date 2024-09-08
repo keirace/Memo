@@ -125,3 +125,12 @@ localStorage.removeItem('name')
 
 ?? nullish coalescing op
 iftrueandnotnull ?? dosth;
+
+## Iteration
+- **for of** = iterate over iterable object
+- **for in** = iterates over all enumerable string properties of an object
+- **arr.splice()** = copy
+- **.apply** = same thing as spread/rest but cannot be used when calling constructor
+- **.apply** Calls the function, substituting the specified object for the this value of the function, and the specified array for the arguments of the function.
+
+- **The spread (...)** syntax allows an iterable, such as an array or string, to be expanded in places where zero or more arguments (for function calls) or elements (for array literals) are expected. rest parameter syntax allows a function to accept an indefinite number of arguments as an array

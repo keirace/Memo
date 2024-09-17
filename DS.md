@@ -280,3 +280,8 @@ p <- p + ggtitle("Graduation Rate vs. Student-Faculty Ratio, by Top 10 Quartiles
 read 2 texts and create a word cloud
 -compute the freq of each word, and plot the most freq word in the biggest font
 ```
+
+python = both interpreted and compiled
+google = 10^100
+
+tuple = immutable, ordered, allow dupes

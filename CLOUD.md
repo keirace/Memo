@@ -15,6 +15,7 @@ Scaling represents the ability of the resource to handle increased or decreased 
   - performance by adding more resources (such as CPU, RAM, or storage) to a single machine
   - always involves downtime (has to be powered off to scale)
 <br>
+
 - **Real-world scenario where vertical scaling is preferred**:
 
 In a scenario where a business is running a database that requires high performance, such as a large relational database like Oracle or MySQL, vertical scaling might be preferred. Databases can benefit from vertical scaling because it simplifies data consistency and query execution without the complexities of managing data across multiple servers, which can introduce latency and consistency challenges.
@@ -30,23 +31,30 @@ For instance, if a company’s database application needs better performance due
     * Match strategy - small increments
 - **Cost reduction**
   * Expenses
-    * Capital - upfront
-    * Operating - recurring
+    * Convert CapEx to OpEx
+      * Capital - upfront
+      * Operating - recurring
 - **Organizational agility**
 
 ### Cloud Characteristics
-
+for  an IT environment to be considered cloud, it must meet the following:
 1. On-demand self service
 2. Broad Network Access
-3. Resource Pooling (multitenancy)
-4. Elasticity - scaling
+3. Resource Pooling (multitenancy) - enables an instance of the program to serve different consumers (tenants) whereby each is isolated from the other
+4. Elasticity - scalable
 5. Measured Service - pay only for the service consumed
 
 ### Cloud Delivery Models
 
 - Iaas
+  - provides self-contained IT environment consisting of hardware, networking, connectivity, Operating Systems and other “raw” it resources
+  - Popular IaaS providers are Amazon Web Services, Google Cloud Platform, Microsoft Azure, IBM SoftLayer, Rackspace
 - PaaS
+  - provides “ready-to-use” environment to deploy applications
+  - Cloud consumers do not have control over or manage the underlying cloud infrastructure
+  - Popular PaaS providers are Heroku, IBM BlueMix and Google App Engine
 - SaaS
+  - Popular SaaS offering examples are Gmail, GitHub, Google Drive
 
 ### Cloud Deployment Models
 
@@ -60,7 +68,7 @@ For instance, if a company’s database application needs better performance due
 
 - term that focuses on collab between dev and it ops
 
-## The software development lifecycle (SDLC) &Challenges with Self Hosted Applications
+## The software development lifecycle (SDLC) & Challenges with Self Hosted Applications
 
 - Cannot auto push updates, features and bug fixes until IT deploys
 - Vendor and end-users are at mercy of IT team’s availability.
@@ -86,8 +94,24 @@ For instance, if a company’s database application needs better performance due
 - Key: Collab
 - Development and operations teams coalesce into a functional team
 - **Infrastructure as Code**
+  - fundamental principle of DevOps
   - applying the same rigor of application code development to infrastructure provisioning and setup
   - Infrastructure provisioning, orchestration, and deployment should support the use of "infrastructure code"
+  - All infrastructure provisioning "code" and environment configuration must be stored in version management system such as Git
+
+```
+Infrastructure as Code (IaC) is the practice of managing and provisioning computing infrastructure through machine-readable configuration files, rather than through manual hardware configuration or interactive configuration tools.
+
+With IaC, infrastructure changes can be version-controlled just like application code, making it easier to track and manage changes over time.
+
+Principles of Infrastructure as Code:
+
+	1.	Idempotency:
+	•	The idea that applying the same configuration multiple times results in the same infrastructure state. Regardless of how many times a script or configuration is applied, the infrastructure remains consistent and in the desired state without introducing duplicate or conflicting resources.
+	2.	Version Control:
+	•	All infrastructure configurations are stored in version control systems (e.g., Git). This allows teams to track changes, roll back to previous versions, and collaborate more effectively. It also ensures that infrastructure changes are auditable and documented.
+
+```
 - **Automation**
   - focuses on the setup, configuration, deployment, and support of infrastructure and the applications that run on it.
   - set up environments more rapidly in a standardized and repeatable manner. The removal of manual process is a key to a successful DevOps strategy.
@@ -154,11 +178,32 @@ class C /24
   - public/private subnets
   - network gateway
 
-# Elastic Network Interfaces
+## Elastic Network Interfaces
 
-# Route table
+- is a virtual network interface that can include the following attributes:
+1. a primary private IPv4 address
+2. one or more secondary private IPv4 addresses
+3. one Elastic IP address per private IPv4 address
+4. one public IPv4 address, which can be auto-assigned to the network
+interface for eth0 when you launch an instance
+5. one or more IPv6 addresses
+6. one or more security groups
+7. a MAC address source/destination check flag
+8. a description
+- Each instance in your VPC has a default network interface, and we cannot detach a primary network interface from an instance
+- You can create and attach an additional network interface to any instance in your VPC. The number of network interfaces you can attach varies by instance type
+
+## Route table
+
 - contains a set of rules, called routes, used to determine where network traffic is directed
 - each subnet must be associated with a route table
   
+## Elastic IP Address
 
+- static IPv4 address designed for dynamic cloud computing
   
+## Security Group
+
+- a security group acts as a virtual firewall for your instance to control inbound and outbound traffic
+- When you launch an instance in a VPC, you can assign up to five security groups to the instance
+- act at the instance level, therefore, each instance in a subnet in your VPC could be assigned to a different set of security groups

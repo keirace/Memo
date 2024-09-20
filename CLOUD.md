@@ -9,6 +9,7 @@ Scaling represents the ability of the resource to handle increased or decreased 
 - **Horizontal Scaling**
   - scaling in/out 
   - refers to adding more/less number of servers to distribute the workload
+  - preferable for stateless 
 
 - **Vertical Scaling**
   - scaling up/down 
@@ -207,3 +208,67 @@ interface for eth0 when you launch an instance
 - a security group acts as a virtual firewall for your instance to control inbound and outbound traffic
 - When you launch an instance in a VPC, you can assign up to five security groups to the instance
 - act at the instance level, therefore, each instance in a subnet in your VPC could be assigned to a different set of security groups
+
+# Version Control with Git
+- has integrity (checksum)
+- use SHA-1 hash 40-char hex
+```
+// origin = alias for git repo !avoid for this course
+git remote add alias <url>
+//  show you which remote server you have
+configured
+git remote -v
+```
+
+## Code Base
+
+## Dependencies
+
+vendoring is important - upstreams can have issues but should not affect our build 
+should explicitly declare and isolate dependencies (defining version of dependency)
+
+## Config
+everything that can be configured - leave them null 
+
+## Backing Services
+- Treat backing services as attached resources
+
+## Build, release, run
+- Strictly separate build and run stages
+
+## Processes
+- Execute the app as one or more stateless processes
+
+## Port binding
+- Export services via port binding
+- use non standard port for dev env (1024 and below run with root user)
+
+## Concurrency
+- Scale out via the process model
+
+## Disposability
+- Maximize robustness with fast startup and graceful shutdown
+- keep it simple
+
+## Dev/prod parity
+- Keep development, staging, and production as similar as possible
+- multiple envs
+
+## Logs
+- Treat logs as event streams
+
+## Admin processes
+- Run admin/management tasks as one-off processes
+
+# Testing
+- Tests serves as good documentation
+- Tests allow for safe refactoring
+- Types
+  - Unit Tests
+    - allows testing in isolation
+    - fast & reliable but takes time to build and requires maintenance
+  - Integration Tests
+    - verify that interaction between multiple component (applications, services, modules, etc.) is working as expected
+  - Performance/Load/Stress Testing
+    - Simulate a heavy load on a server
+    - Load testing is also a way to perform a functional test on websites, databases, LDAPs, webservices etc.

@@ -215,8 +215,7 @@ interface for eth0 when you launch an instance
 ```
 // origin = alias for git repo !avoid for this course
 git remote add alias <url>
-//  show you which remote server you have
-configured
+//  show you which remote server you have configured
 git remote -v
 ```
 

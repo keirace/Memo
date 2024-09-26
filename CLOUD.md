@@ -17,7 +17,7 @@ Scaling represents the ability of the resource to handle increased or decreased 
   - always involves downtime (has to be powered off to scale)
 <br>
 
-- **Real-world scenario where vertical scaling is preferred**:
+- **Q: Real-world scenario where vertical scaling is preferred**:
 
 In a scenario where a business is running a database that requires high performance, such as a large relational database like Oracle or MySQL, vertical scaling might be preferred. Databases can benefit from vertical scaling because it simplifies data consistency and query execution without the complexities of managing data across multiple servers, which can introduce latency and consistency challenges.
 
@@ -210,48 +210,94 @@ interface for eth0 when you launch an instance
 - act at the instance level, therefore, each instance in a subnet in your VPC could be assigned to a different set of security groups
 
 # Version Control with Git
+
+## Local Version Control
+- Revision Control System (RCS)
+- Source Code Control System (SCCS)
+
+## Centralized Version Control
+- CVS
+- SVN
+- Perforce
+
+## Distribution Version Control Systems
+- Git
+- Mercurial
+- Bazaar
+- Darcs
+
+## Short History of Git
+- Linux kernel project began using a proprietary DVCS called BitKeeper in 2002 but in 2005 the relationship broke down and no longer free
+- Linus Torvalds created Git in 2005 to manage Linux kernel
+
+## Git Has Integrity
 - has integrity (checksum)
 - use SHA-1 hash 40-char hex
 ```
 // origin = alias for git repo !avoid for this course
 git remote add alias <url>
+
 //  show you which remote server you have configured
 git remote -v
+
+// download the data to local repo but does not merge
+git fetch
 ```
 
+# Twelve-factor App
+> The twelve-factor app is a methodology for building software-as-a-service apps that:
+> - Use **declarative** formats for setup automation
+> - Have a **clean contract** with the underlying operating system, offering **maximum portability** between execution environments;
+> - Are suitable for **deployment** on modern **cloud platforms**
+> - **Minimize divergence** between development and production, enabling **continuous deployment** for maximum agility;
+> - And can **scale up** without significant changes to tooling, architecture, or development practices.
+
 ## Code Base
+is any single repo
+- There is always a one-to-one correlation between the codebase and the app:
+  - if there are multiple codebases: it's a `distributed system` not an app
+  - Multiple apps sharing the same code is a violation of twelve-factor. The solution here is to factor shared code into libraries which can be included through the `dependency manager`.
 
 ## Dependencies
 
-vendoring is important - upstreams can have issues but should not affect our build 
-should explicitly declare and isolate dependencies (defining version of dependency)
+vendoring is important - upstreams can have issues but should not affect our build
+- should explicitly declare and isolate dependencies (defining version of dependency)
 
 ## Config
+Store config in the environment
 everything that can be configured - leave them null 
 
 ## Backing Services
 - Treat backing services as attached resources
+- Any service the app consumes over the network as part of its normal operation. Examples include datastores (such as MySQL or CouchDB), messaging/queueing systems (such as RabbitMQ or Beanstalkd), SMTP services for outbound email (such as Postfix), and caching systems (such as Memcached)
 
 ## Build, release, run
 - Strictly separate build and run stages
+- A codebase is transformed into a (non-development) deploy through these three stages
 
 ## Processes
-- Execute the app as one or more stateless processes
+- Execute the app as one or more stateless processes, share-nothing
+- Twelve-factor processes are stateless and share-nothing. Any data that needs to persist must be stored in a stateful backing service, typically a database.
+- Some web systems rely on “sticky sessions” – that is, caching user session data in memory of the app’s process and expecting future requests from the same visitor to be routed to the same process.
 
 ## Port binding
 - Export services via port binding
+- The twelve-factor app is completely self-contained and does not rely on runtime injection of a webserver into the execution environment to create a web-facing service. The web app exports HTTP as a service by binding to a port, and listening to requests coming in on that port.
 - use non standard port for dev env (1024 and below run with root user)
 
 ## Concurrency
 - Scale out via the process model
+- The twelve-factor app scales out by adding more `processes` rather than making existing ones more powerful.
 
 ## Disposability
 - Maximize robustness with fast startup and graceful shutdown
 - keep it simple
+- The twelve-factor app’s processes are disposable, meaning they can be started or stopped at a moment’s notice. This facilitates fast elastic scaling, rapid deployment of code or config changes, and robustness of production deploys.
 
 ## Dev/prod parity
 - Keep development, staging, and production as similar as possible
 - multiple envs
+- Make the tools gap small
 
 ## Logs
 - Treat logs as event streams
@@ -260,14 +306,22 @@ everything that can be configured - leave them null
 - Run admin/management tasks as one-off processes
 
 # Testing
+
 - Tests serves as good documentation
 - Tests allow for safe refactoring
 - Types
+  > Unit testing > Integration testing > Functional Testing > Manual Testing
   - Unit Tests
+    - should not require access to any external systems, using mocked data
     - allows testing in isolation
     - fast & reliable but takes time to build and requires maintenance
   - Integration Tests
     - verify that interaction between multiple component (applications, services, modules, etc.) is working as expected
+      - Challenges
+        - difficult to test all critical paths
+        - hard to find the source of errors
+        - requires time and commitment from multiple component owners
   - Performance/Load/Stress Testing
     - Simulate a heavy load on a server
-    - Load testing is also a way to perform a functional test on websites, databases, LDAPs, webservices etc.
+    - Load testing is also a way to perform a `functional test` on websites, databases, LDAPs, webservices etc.
+    - Load testing verifies the system’s behavior under expected user load, while stress testing evaluates performance under extreme conditions.

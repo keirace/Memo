@@ -300,3 +300,13 @@ def magic(*args, **kwargs):
     print ("keyword args: ", kwargs)
 magic(1, 2, 3, 4, 5, 6, 'foo', key1 = 'NU', key2 = 'rocks!', key3 = 'really!')
 ```
+
+
+covariant is not normalized 
+correlation coefficient `.corr`
+pearson = standard corr
+poisson = takes a certain fixed amount of time
+
+bernoullie = win/lose
+gamma distribution
+brownian motion = complete randomness

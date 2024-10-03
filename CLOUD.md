@@ -1,6 +1,9 @@
 
 # Cloud Computing
 
+- [Computer Networking](#Computer Networking)
+- [Linux](#linux)
+  
 ## Fundamentals of Cloud Computing
 
 ### Scaling
@@ -330,36 +333,55 @@ everything that can be configured - leave them null
 > Q: Reserved ports are `0-1023`
 
 # Linux
-- kernel = operating system
+
+- Kernel = operating system
+- **Components of OS**
+  - The Bootloader
+  - The kernel
+  - Daemons = background services
+  - Desktop Env
+  - Applications
+  - The shell
 mac is using z shell
 
 dir
 - /bin
-- /boot
-- /dev
+- /boot - don't touch
+- **/dev** - device, generated at boot time/on the fly
 - /etc
-- /home
-- /lib
-- /media
-- /mnt
-- /opt - can install apps
-- /proc - in memory dir
-- /root aka admin
-- /run
+- /home - personal dir
+- /lib - code that applications use
+- /media - external storage, mounted when plug in and try to access
+- /mnt - not used often nowadays
+- /opt - can install apps, where software compiles
+- **/proc** - in memory dir, info about computer, generated at boot time/on the fly
+- /root - aka admin, don't touch
+- /run - don't touch
 - /sbin - contains apps that only superuser will need
-- /usr - 
-- /srv 
-- /sys - virtual dir
-- /tmp
-- /var - logs
+- /usr - stuffs that need to be shared by apps and services
+- /srv - servers
+- **/sys** - virtual dir
+- /tmp - can interact without becoming superuser
+- /var - logs @ /var/log
 
 ## Some commands
-- Viewing process
+
+- \> connects to a file while | connects with input of a 2nd command
+- Permission `rwx` = read write execute
+  - owner group world 
+- `&` puts a process in the background
+- `du -sm` estimate file space usage in megabytes
+- `df -m` report file system disk usage
 ```
+# Viewing process
 ps -ef | grep cron
 
 # runs program in background, adding & to immediately place it in bg
+# nohub - run programs in bg after logging off
 nohub 60 &
+
+# returning a process to the foreground
+fg <job_id>
 
 # kill a process that refuses to be killed
 kill -9
@@ -367,14 +389,22 @@ kill -9
 # kill everything
 kill -9 -1 
 
-# estimate system size
+# Disk Usage
+# summary of the disk usage for a specific directory
 du -sh .
 
+# disk usage in human-readable format
 du -h
+
+# Disk Free: overall file system usage
+df -m file system disk usage
 
 apt update & upgrade
 
 scp -i key_path file_path:dest_path
+
+# checking if the file exists
+which <file>
 ```
 
 vi
@@ -385,3 +415,11 @@ number G go to page
 G last page
 /g global search
 ```
+
+# Shell Scripts
+
+- Shell scripts and functions are both interpreted. Not compiled.
+- Shell scripts and functions are ASCII read by shell command interpreter
+- Case Sensitive
+- `#!` indicate an interpreter for execution under unix/linux
+- `if [ condition ]`

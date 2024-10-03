@@ -285,3 +285,18 @@ python = both interpreted and compiled
 google = 10^100
 
 tuple = immutable, ordered, allow dupes
+
+
+## Prime
+```
+def is_prime(n):
+    return n > 1 and all(n % i != 0 for i in range(2, int(n ** 0.5) + 1))
+```
+
+args is a tuple of its unnamed arguments and kwargs is a dictionary of its named arguments
+```
+def magic(*args, **kwargs):
+    print ("unnamed args: ", args)
+    print ("keyword args: ", kwargs)
+magic(1, 2, 3, 4, 5, 6, 'foo', key1 = 'NU', key2 = 'rocks!', key3 = 'really!')
+```

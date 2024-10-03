@@ -169,7 +169,8 @@ create user -> give user security credentials -> put user into one/more groups -
 ## Subnet
 class A /8 8 bits for network prefix, 24 bits host address
 class B /16
-class C /24
+class C /24 
+> Q: 254 usable host addresses, reserving 1 for network and 1 for broadcast address
 
 ## VPC
 
@@ -325,3 +326,62 @@ everything that can be configured - leave them null
     - Simulate a heavy load on a server
     - Load testing is also a way to perform a `functional test` on websites, databases, LDAPs, webservices etc.
     - Load testing verifies the system’s behavior under expected user load, while stress testing evaluates performance under extreme conditions.
+
+> Q: Reserved ports are `0-1023`
+
+# Linux
+- kernel = operating system
+mac is using z shell
+
+dir
+- /bin
+- /boot
+- /dev
+- /etc
+- /home
+- /lib
+- /media
+- /mnt
+- /opt - can install apps
+- /proc - in memory dir
+- /root aka admin
+- /run
+- /sbin - contains apps that only superuser will need
+- /usr - 
+- /srv 
+- /sys - virtual dir
+- /tmp
+- /var - logs
+
+## Some commands
+- Viewing process
+```
+ps -ef | grep cron
+
+# runs program in background, adding & to immediately place it in bg
+nohub 60 &
+
+# kill a process that refuses to be killed
+kill -9
+
+# kill everything
+kill -9 -1 
+
+# estimate system size
+du -sh .
+
+du -h
+
+apt update & upgrade
+
+scp -i key_path file_path:dest_path
+```
+
+vi
+```
+ctrl f page up
+ctrl b page down
+number G go to page
+G last page
+/g global search
+```

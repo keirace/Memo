@@ -366,12 +366,15 @@ dir
 
 ## Some commands
 
-- `\>` connects to a file while `|` connects with input of a 2nd command
+- The **redirection operator** `>` connects to a file while **pipeline operator** `|` connects the output of one command with input of a 2nd command
 - Permission `rwx` = read write execute
   - owner group world 
 - `&` puts a process in the background
 - `du -sm` estimate file space usage in megabytes
 - `df -m` report file system disk usage
+- Zombie process 
+  - completed execution but still has entry = Terminated state
+  - occurs for child processes
 ```
 # Viewing process
 ps -ef | grep cron
@@ -393,7 +396,7 @@ kill -9 -1
 # summary of the disk usage for a specific directory
 du -sh .
 
-# disk usage in human-readable format
+# Disk usage in human-readable format
 du -h
 
 # Disk Free: overall file system usage
@@ -405,6 +408,18 @@ scp -i key_path file_path root@ip_address:/dest_path
 
 # checking if the file exists
 which <file>
+
+# change owner and group
+chown root:newgroup file.txt
+
+# viewing process dynamically
+top
+
+# reboot
+sudo shutdown –r now
+
+# zombie process
+ps aux | grep 'Z'
 ```
 
 vi

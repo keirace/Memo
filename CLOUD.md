@@ -1,8 +1,9 @@
 
 # Cloud Computing
 
-- [Computer Networking](#Computer Networking)
+- [Computer Networking](#Computer-Networking)
 - [Linux](#linux)
+- [Terraform](#Terraform)
   
 ## Fundamentals of Cloud Computing
 
@@ -19,12 +20,6 @@ Scaling represents the ability of the resource to handle increased or decreased 
   - performance by adding more resources (such as CPU, RAM, or storage) to a single machine
   - always involves downtime (has to be powered off to scale)
 <br>
-
-- **Q: Real-world scenario where vertical scaling is preferred**:
-
-In a scenario where a business is running a database that requires high performance, such as a large relational database like Oracle or MySQL, vertical scaling might be preferred. Databases can benefit from vertical scaling because it simplifies data consistency and query execution without the complexities of managing data across multiple servers, which can introduce latency and consistency challenges.
-
-For instance, if a company’s database application needs better performance due to larger datasets or more transactions, adding more CPU and RAM to a single server (vertical scaling) can enhance performance without requiring architectural changes, as would be needed with horizontal scaling.
 
 ### Business Drivers
 
@@ -170,9 +165,13 @@ create user -> give user security credentials -> put user into one/more groups -
 - does not work well with P2P as it requires 2 hosts to communicate directly
   
 ## Subnet
-class A /8 8 bits for network prefix, 24 bits host address
-class B /16
-class C /24 
+- class A /8 fixed 0
+  - 8 bits for network prefix, 24 bits host address
+- class B /16 fixed 10
+- class C /24 fixed 110 
+	•	Class A: 126 networks, 16,777,214 usable hosts per network
+	•	Class B: 16,384 networks, 65,534 usable hosts per network
+	•	Class C: 2,097,152 networks, 254 usable hosts per network
 > Q: 254 usable host addresses, reserving 1 for network and 1 for broadcast address
 
 ## VPC
@@ -287,7 +286,7 @@ everything that can be configured - leave them null
 ## Port binding
 - Export services via port binding
 - The twelve-factor app is completely self-contained and does not rely on runtime injection of a webserver into the execution environment to create a web-facing service. The web app exports HTTP as a service by binding to a port, and listening to requests coming in on that port.
-- use non standard port for dev env (1024 and below run with root user)
+- use non standard port for dev env (1023 and below run with root user)
 
 ## Concurrency
 - Scale out via the process model
@@ -335,6 +334,7 @@ everything that can be configured - leave them null
 # Linux
 
 - Kernel = operating system
+- No file extensions
 - **Components of OS**
   - The Bootloader
   - The kernel
@@ -366,7 +366,7 @@ dir
 
 ## Some commands
 
-- \> connects to a file while | connects with input of a 2nd command
+- `\>` connects to a file while `|` connects with input of a 2nd command
 - Permission `rwx` = read write execute
   - owner group world 
 - `&` puts a process in the background
@@ -401,7 +401,7 @@ df -m file system disk usage
 
 apt update & upgrade
 
-scp -i key_path file_path:dest_path
+scp -i key_path file_path root@ip_address:/dest_path
 
 # checking if the file exists
 which <file>
@@ -419,7 +419,96 @@ G last page
 # Shell Scripts
 
 - Shell scripts and functions are both interpreted. Not compiled.
-- Shell scripts and functions are ASCII read by shell command interpreter
+- Shell scripts and functions are `ASCII` read by shell command interpreter
 - Case Sensitive
-- `#!` indicate an interpreter for execution under unix/linux
+- `#!` @ first line indicates an interpreter for execution under unix/linux
+  - `#!/bin/bash`
 - `if [ condition ]`
+- the trap command captures an interrupt (signal) and then clean it up within the script
+- echo `$varName` or echo `${varName}`
+
+- average time in last 5 mins
+- Exit status
+  - 0 exit status means the command was successful without any errors
+  - A non-zero (1-255 values) exit status means command was failure
+  - Use shell variable `?` to get the exit status of the *previously* executed command
+
+## CI
+> practice of merging all developer working copies to a shared mainline several times a day.
+> runs unit tests for every commit
+- benefits
+  - catches bugs early, reduce the time to deliver
+  - improve the quality
+- **Continuous delivery** -> manual deployment to prod
+  - Automate: repeatable build, deploy, test and release
+  - Frequent: delta between releases will be small, reduces the risk associated with releasing
+- **Continuous deployment** -> auto deployment
+
+mvp = minimum viable product eg api only
+
+## Github Actions
+> help automate tasks within software development life cycle
+> event-driven
+- **Workflows** - automated procedure inside a repo
+- **Events** - triggers a workflow
+```
+on: [push]
+```
+- **Jobs** - execute on the same runner (vm), can be run in parallel (default) or sequentially
+  - A workflow can have two sequential jobs that build and test code, where the test job is dependent on the status of the build job. If the build job fails, the test job will not run.
+```
+jobs:
+```
+- **Steps** - individual task that can run commands in a job
+  - action or shell command
+```
+steps:
+```
+- **Actions** - standalone commands that are combined into steps to create a job
+  - smallest portable building block of a workflow
+  - To use an action in a workflow, you must include it as a step
+```
+uses: actions/checkout@v2
+```
+- **Runners** - is a server that has the GitHub Actions runner application installed
+```
+runs-on: ubuntu-latest
+```
+  - can use a runner hosted by GitHub, or you can host your own
+- github actions uses YAML files stored in a dir `.github/workflows` inside repo
+- secrets are limited to `64kb` in size
+
+# Infrastructure as Code
+
+- Challenges with Dynamic Inrfastructure
+  - Server Sprawl - the number of servers growing faster than the ability of the team to manage
+  - Configuration Drift - inconsistency across the servers
+  - Snowflake servers - special servers, cannot autoscale, replicated
+  - Fragile infrastructure - easily disrupted, not easily fixed, snowflake server problem
+- Principles
+  - Systems Can Be Easily Reproduced
+  - Systems Are Disposable
+  - CATTLE, NOT PETS
+  - Systems Are Consistent
+  - Processes Are Repeatable
+  - Design Is Always Changing
+
+# Terraform
+> The main purpose of the Terraform language is declaring resources
+> A group of resources can be gathered into a module, which creates a larger unit of configuration
+> A resource describes a single infrastructure object
+> A module might describe a set of objects and the relationships between them in order to create a higher-level system
+> A Terraform configuration consists of a root module, where evaluation begins, along with a tree of child modules created when one module calls another
+
+- Terraform State
+  - This state is stored by default in a local file named "terraform.tfstate"
+- install with brew
+```
+brew tap hashicorp/tap
+brew install hashicorp/tap/terraform
+```
+- writes in HCL lang with extension `.tf`
+- `terraform plan` - allows user to review changes -> refreshes the state -> might take too long
+- `terraform apply`
+- `terraform state`
+- `terraform destroy`

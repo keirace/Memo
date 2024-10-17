@@ -24,3 +24,7 @@ Q: Average time in last 5 mins
   Load Avg: 1.82, 2.26, 2.62  CPU usage: 4.32% user, 4.32% sys, 91.34% idle
   ```
   - answer: 2.26
+
+what should not be managed in VCS?
+
+Collection of infrastructure servers unit. Could be single or multiple.

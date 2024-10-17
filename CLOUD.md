@@ -507,6 +507,13 @@ runs-on: ubuntu-latest
   - Systems Are Consistent
   - Processes Are Repeatable
   - Design Is Always Changing
+- Stack - a collection of infrastructure elements that are defined as a unit, can be any size 
+- Environment - multiple stacks
+- What NOT to Manage in a VCS
+  - Software artifacts should be stored in a repository
+  - Software and other artifacts that are built from elements already in the VCS
+  - Data managed by applications, logfiles
+  - Passwords and other security secrets
 
 # Terraform
 > The main purpose of the Terraform language is declaring resources
@@ -527,3 +534,100 @@ brew install hashicorp/tap/terraform
 - `terraform apply`
 - `terraform state`
 - `terraform destroy`
+
+# Virtualization
+
+## Virtual Machine
+> a tightly isolated software container
+- each self-contained vm is completely independent
+- multiple VMs on a single computer enables OS and apps to run on just 1 physical server (host)
+  
+## Hypervisor 
+> a software decouples VMs from the host and dynamically allocates computing resources to each vm
+
+## Key properties of VMs
+  - **Partitioning**
+    - run multiple OS on 1 physical machine
+    - divide system resources between VMs
+  - **Isolation**
+    - provide fault and security isolation at the hardware level
+    - preserve performance with advanced resource controls
+  - **Encapsulation**
+    - save the entire state of a VM to files
+    - move and copy VM easily
+  - **Hardware Independence**
+    - provision or migrate any VM to any physical server
+
+## Server Consolidation 
+> Using server virtualization, a company can maximize the use of its server resources and reduce the number of servers required
+> vulnerable to failure but improves efficiency and cuts costs
+
+## Virtualization != Cloud 
+- can do cloud using virtualization
+- cloud computing describes the delivery of shared computing resources on demand thru the internet
+- we can start virtualizing servers with/without cloud
+
+## EC2
+- Types
+  - General Purpose
+  - Compute Optimized
+  - Memory Optimized
+  - Accelerated Computing (GPU)
+  - Storage Optimized
+- Pricing Model
+  - On-Demand - pay by hour
+  - Spot Instances - bid unused instances
+  - Reserved Instances - assigned to a specific avail zone
+    - steady usage
+    - 1 or 3 year term
+  - Dedicated Hosts
+  - Dedicated Instances
+- Dedicated Instances - EC3 that run in a VPC on hardware that's dedicated to a single customer
+- Dedicated Hosts - physical EC2 server
+
+### AMI (Amazon Machine Images)
+- provides the information required to launch an EC2 instance
+- can launch multiple instances from a single AMI
+
+### EBS
+- block level storage
+- data must be quickly accessible
+
+## GCE
+- Types
+  - General Purpose
+  - Compute Optimized
+  - Memory Optimized
+  - Accelerator-optimized
+
+- Pricing Model
+  - on-demand
+  - spot
+  - reserved
+  - dedicated hosts
+  - dedicated instances
+- **AMI**
+  - Provides the information required to launch an EC2 instance
+- Amazon EBS - Elastic Block Store
+  - attached to EC2 instance
+  - recommended when data must be quickly accessible
+- Image - Immutable  - 
+
+## Custom Image
+- **Golden Images** - secure, immutable OS images
+- **Environment Parity** - Keep all dev/test/prod environment as similar as possible
+- **Auto-scaling Acceleration** - Launch completely provisioned and configured instances in seconds,
+
+## IOPS 
+- are a unit of measure representing input/output operations per
+second
+- capped at 256 KiB for SSD and and 1024 KiB for HDD
+- A single 1,024 KiB I/O operation counts as 4 operations (1,024÷256=4), while 8 contiguous I/O operations at 32 KiB each count as 1 operation (8×32=256). However, 8 random I/O operations at 32 KiB each count as 8 operations. Each I/O operation under 32 KiB counts as 1 operation.
+
+## Security Group
+- acts as a virtual firewall
+- associate one or more security groups with the instance
+
+## Instance metadata and user data
+- Instance metadata is data about your instance
+- can use instance metadata to access user data that's specified when launching

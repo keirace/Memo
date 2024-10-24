@@ -4,7 +4,8 @@
 - [Computer Networking](#Computer-Networking)
 - [Linux](#linux)
 - [Terraform](#Terraform)
-- [Cloud Storage Solution](#Block-level-storage)
+- [Cloud Storage Solution](#Cloud-Storage-Options)
+- [EBS](#EBS)
   
 ## Fundamentals of Cloud Computing
 
@@ -731,10 +732,10 @@ multiple EC2 instances and that require substantial levels of aggregate throughp
 - strongly consistent
 
 ## Tiers/Classes
-- S3 (standard) - hight avail & dura stored redundantly
-- S3 - IA
-- Reduced Redundancy Storage - hight avail & dura over a given year
-- Glacier - 3-5 hrs to retrieve
+- **S3 (standard)** - hight avail & dura stored redundantly
+- **S3 - IA** - For data that is accessed less frequently but requires rapid access when needed
+- **Reduced Redundancy Storage** - hight avail & dura over a given year
+- **Glacier** - Archival only, 3-5 hrs to retrieve
 
 ## S3 Use Cases
 - ranging from simple storage repository for backup & recovery to primary storage for some of the most cutting-edge cloud-native applications in the market today and everything in between.
@@ -750,17 +751,41 @@ multiple EC2 instances and that require substantial levels of aggregate throughp
 - reduced redundancy storage object lost event
 revenue - cost
 
+### Bucket Versioning
+- By default, S3 versioning is disabled for every bucket
+- A versioning-enabled bucket can have multiple versions of objects in the bucket
+
 ### Data Lifecycle Management
+- rules allow you to define actions you want amazon s3 to take during an object's lifetime such as:
+  - transition objects to another storage class
+  - archive objects
+  - delete objects after a specified period of time
+
+###  Object Tagging
+- S3 object tags are key-value pairs 
+- can create IAM policies, setup S3 lifecycle policies, and customize storage metrics
+- these tags can manage transitions between storage classes and expire objects in the background
+
+### Encryption
+- **SSE-S3** S3 will encrypt data at rest and manage the encryption keys
+- **SSE-C (Customer-Provided keys)** encrypt data at rest with custom encryption keys
+- **SSE-KMS** encrypt data at rest with keys in AWS Key management service
+
+### Cross-region replication
+- auto, async copying of objects across buckets in diff AWS regions
 
 ### Querying S3
 - doesn’t offer query capabilities to retrieve specific obj
+- need to know the exact `bucket name` and `key`
+- can't be used as a db or search engine by itself
+- can be paired with DynamoDB, Cloudsearch, RDS to index and query metadata about S3 buckets and objects
 
 ### Not suited for file system
 - flat namespace - use EFS instead
 
-## Relational Database
+## Relational Database (RDBMS)
 
-## Transactions
+### Transactions
 - RDBMS must support **ACID** transactions to operate efficiently
   - Atomicity
     - all or nothing
@@ -772,8 +797,27 @@ revenue - cost
     - transaction/result stored permanently -> able to provide a given time and restore
 log file = async
 
-## Backups
-- the restored version of the database will be a new RDS instance with a new end point
+### Backups of AWS RDS
+- the restored version of the database will be a `new RDS instance` with a `new endpoint`
+- 2 types
+  - **automated backups**
+    - take a full daily snapshot
+    - enabled by default
+    - stored in S3 but free
+    - during backup window, might experience higher latency as storage I/O may be suspended
+    - deleted when the RDS instance is deleted
+  - **database snapshots**
+    - manual
+    - stored even after the original RDS instance deletion
+
+### RDS Multi-AZ Deployments
+- When provisioning a multi-AZ DB instance, Amazon RDS auto creates a **primay DB instance** and synchronously replicates the data to a **standby instance in a different AZ**
+- RDS performs an auto failover to the standby in case of infrastructure failure, can resume as soon as the failover is complete and using the same endpoint
+
+### RDS Read Replicas
+- enhance performance and durability for db instances
+- easy to elastically scale out beyond the capacity constraints of a single DB instance for read-heavy db workloads
+- can create 1 or more replicas
 
 > vertical scaling for persistent storage system
 
@@ -781,12 +825,62 @@ log file = async
 - schema-less
 - runs well on cluster
 - most NoSQLs lack true ACID transactions
+- Scaled out horizontally (linearly) by adding more processors
+
+### Value of Relation Database
+- store large amounts of persistent data
+- concurrency
+- standard model
+- ACID
+
+### Not good side of RDBMS
+- **Impedance mismatch** - diff between relational model and in-mem data structure
+- mediocre **horizontal** scaling support
+
+### Storing and retrieving data
+- key-value (DynamoDB)
+- graph
+- column-family (Cassandra) 
+  - think of spreadsheets
+- document (MongoDB)
 
 ## CAP Theorem (FINAL)
 > it is impossible for a distributed computer system to simultaneously provide more than two out of three of the following guarantees:
-- Consistency - Every read receives the most recent write or an error
-- Availability - Every request receives a (non-error) response – without guarantee that it contains the most recent write
-- Partition tolerance - The system continues to operate despite an arbitrary number of messages being dropped (or delayed) by the network between nodes
+- **Consistency** - Every read receives the most recent write or an error
+- **Availability** - Every request receives a (non-error) response – without guarantee that it contains the most recent write
+- **Partition tolerance** - The system continues to operate despite an arbitrary number of messages being dropped (or delayed) by the network between nodes
+
+### Most NoSQL stores lack true ACID transactions
+
+### NoSQL Databases & Consistency
+- NoSQL db offer "Eventual Consistency" in which changes are propagated to all nodes 'eventually'
+- queries for data might not return updated data immediately or might result in reading data that is not accurate, a problem known as **stale reads**
+
+### Polyglot Persistence
+- choosing the right persistence option for task at hand
+
+### Concurrency Control Mechanisms
+- Optimistic - delay the checking
+- Pessimistic - block an operation of a transaction
+
+### Write-Write Conflict
+
+### Read-Write Conflict
+
+### Version Stamps
+- A field that changes every time the underlying data in the record changes
+
+### Single Server (Distribution Model)
+- One machine handles all reads and writes to the database
+
+### Sharding (Distribution Model)
+- data is partitioned across different nodes
+
+### Primary/Secondary Nodes Replication (Distribution Model)
+- replicate data across multiple nodes
+
+### Peer-to-Peer Replication (Distribution Model)
+- no master node in peer-to-peer replication
 
 # Normalization & Denormalization
 ## Database Normalization

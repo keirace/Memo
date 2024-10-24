@@ -287,11 +287,56 @@ google = 10^100
 tuple = immutable, ordered, allow dupes
 
 
+```
+def numbers():
+    i = 0
+    while True:
+        yield i
+        i += 1
+```
+
+```
+import queue as Q
+q = Q.Queue()
+for index, item in enumerate(numbers()):
+    q.put(item)
+    if index == 100:
+        break
+```
+
+```
+from fractions import Fraction
+
+is_predicate = callable
+
+def p(event, space): 
+    "The probability of an event, given a sample space of equiprobable outcomes."
+    if is_predicate(event):
+        event = such_that(event, space)
+    return Fraction(len(event & space), len(space))
+
+def such_that(predicate, collection): 
+    """The subset of elements in the collection for which the predicate is true."""
+    return {e for e in collection if predicate(e)}
+
+def even(n): return n % 2 == 0
+
+p(even, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
+```
+
+## Binomial Distribution
+- looks a bit like Gaussian but diff bell shape
+> **probability mass function**: $$f(k) = {n \choose k} p^{k} (1-p)^{n-k}$$
+
+>**Example**: Suppose a **biased** coin comes up heads with probability 0.3 when tossed. The probability of seeing exactly 4 heads in 6 tosses is:
+>$$f(4, 6, 0.3) = {6 \choose 4} 0.3^{4} (1 - 0.3)^{6 - 4} = 0.06$$
+
 ## Prime
 ```
 def is_prime(n):
     return n > 1 and all(n % i != 0 for i in range(2, int(n ** 0.5) + 1))
 ```
+## Higher Order Function
 
 args is a tuple of its unnamed arguments and kwargs is a dictionary of its named arguments
 ```
@@ -300,7 +345,25 @@ def magic(*args, **kwargs):
     print ("keyword args: ", kwargs)
 magic(1, 2, 3, 4, 5, 6, 'foo', key1 = 'NU', key2 = 'rocks!', key3 = 'really!')
 ```
+## Bayes Theorem
+$$P(A \;|\; E) = \frac{P(E \;|\; A) \;*\; P(A)}{ P(E) }$$
 
+```
+def joint(A, B, sep=''):
+    """The joint distribution of two independent probability distributions. 
+    Result is all entries of the form {a+sep+b: P(a)*P(b)}"""
+    return ProbDist({a + sep + b: A[a] * B[b] 
+                        for a in A 
+                        for b in B})
+
+MM = joint(bag94, bag96, ' ')
+
+
+def yellow_and_green(outcome): return 'yellow' in outcome and 'green' in outcome
+
+such_that(yellow_and_green, MM)
+
+```
 
 covariant is not normalized 
 correlation coefficient `.corr`
@@ -310,3 +373,6 @@ poisson = takes a certain fixed amount of time
 bernoullie = win/lose
 gamma distribution
 brownian motion = complete randomness
+
+
+## 

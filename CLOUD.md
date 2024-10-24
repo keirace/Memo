@@ -4,6 +4,7 @@
 - [Computer Networking](#Computer-Networking)
 - [Linux](#linux)
 - [Terraform](#Terraform)
+- [Cloud Storage Solution](#Block-level-storage)
   
 ## Fundamentals of Cloud Computing
 
@@ -631,3 +632,170 @@ second
 ## Instance metadata and user data
 - Instance metadata is data about your instance
 - can use instance metadata to access user data that's specified when launching
+
+
+# Cloud Storage Options
+- [Block-level Storage](Block-level-Storage)
+- [Object Storage Service](Object-Storage-Service)
+- [Relationnal Databases](Relational-Databases)
+- [NoSQL Databases](NoSQL-Databases)
+
+## Block-level Storage (EBS)
+- Block-level storage with a disk file system (FAT32, NTFS, ext3, ext4, XFS, and so on) can be used to store files as you do on a personal computer
+- A block is a sequence of bytes and the smallest addressable unit
+- The disk file system manages where files are persisted on the underlying block-level storage (block address)
+- can use block-level storage only in combination with a VM (EC2) instance where the OS runs
+
+### Why do we need EBS?
+- for persistence for apps like DB
+- MySQL uses system calls to access files so it can't store its files in an object store
+
+### Block-level Storage on AWS
+1. Network Attached Storage (NAS) via EBS service
+2. Instance Storage
+
+### Use Cases
+- databases, data warehousing, big data applications
+- apps that demand the highest IOPS or throughput and low latency with consistent, predictable performance
+
+### EBS Lifetime
+- not part of EC2 instances
+- attached to EC2 via a network connection
+- attached to 0 or 1 EC2 at a time
+
+### Availability
+- high avail, auto replicated within its availability zone (cannot be outside of its AZ)
+
+### Snapshots
+- saved to Amazon S3
+- stored incrementally: only the blocks that have changed are saved
+
+### Encryption
+- provides seamless support for data-at-rest and data-in-transit between EC2 instances and EBS volumes
+
+## Instance Store
+- `temporary` block-level storage
+- ideal for temporary storage of information that changes frequently such as `buffers, caches, scratch data` or data that is replicated across a fleet of instances such as a `load-balanced pool of web servers`
+- located on disks that are physically attached to the host computer
+- consists of 1 or more instance store volumes exposed as block devices
+- size of an instance varies by instance type
+- the virtual devices for instance store volumes are `ephemeral[0-23]`
+- type that supports 1 instance store volume have `ephemeral0`
+- type that supports 2 instance store volumes have `ephemeral0` and `ephemeral1`, and so on
+
+### Use Cases
+- caching
+- temporary processing
+- applications that replicate data to several servers
+
+### Lifetime
+- persists only during the lifetime of its associated instance
+- data in the store persists if an instance reboots
+- data lost in the following circumstances:
+  - disk drive fails
+  - instance stops
+  - instance termination
+
+### Cost
+- included in the EC2 instance price, no additional charge
+
+### Encryption
+- No out of the box solution for data at rest
+
+Instance store backed volume cannot be “stopped”. They can only be rebooted or terminated
+
+## EFS
+- cannot be the root volume
+- supports NFSv4 and 4.1 making it easy to migrate enterprise apps to AWS
+- can be in multi AZ
+- highly avail and durable
+- designed to meet the needs of multi-threaded
+applications and applications that concurrently access data from
+multiple EC2 instances and that require substantial levels of aggregate throughput and input/output operations per second (IOPS)
+
+### EFS Use Case
+- Big Data and analytics
+- Media processing workflows
+- Content management
+- Web serving
+- Home directories
+
+## Object Storage Service
+- Each object consists of a globally unique identifier, some metadata and data
+
+## S3 (Simple Storage Service)
+- unlimited storage space
+- highly available and durable
+- object can be 5TB or less
+- access with RESTful APIs
+- strongly consistent
+
+## Tiers/Classes
+- S3 (standard) - hight avail & dura stored redundantly
+- S3 - IA
+- Reduced Redundancy Storage - hight avail & dura over a given year
+- Glacier - 3-5 hrs to retrieve
+
+## S3 Use Cases
+- ranging from simple storage repository for backup & recovery to primary storage for some of the most cutting-edge cloud-native applications in the market today and everything in between.
+
+## S3 Buckets
+- every object resides in a bucket
+- unique names for diff REST endpoints
+- globally unique name
+
+### Event Notifications
+- created event
+- removed event
+- reduced redundancy storage object lost event
+revenue - cost
+
+### Data Lifecycle Management
+
+### Querying S3
+- doesn’t offer query capabilities to retrieve specific obj
+
+### Not suited for file system
+- flat namespace - use EFS instead
+
+## Relational Database
+
+## Transactions
+- RDBMS must support **ACID** transactions to operate efficiently
+  - Atomicity
+    - all or nothing
+  - Consitency
+    - take from 1 state to another
+  - Isolation
+    - ensures that concurrent execution results in sequential
+  - Durability
+    - transaction/result stored permanently -> able to provide a given time and restore
+log file = async
+
+## Backups
+- the restored version of the database will be a new RDS instance with a new end point
+
+> vertical scaling for persistent storage system
+
+## NoSQL
+- schema-less
+- runs well on cluster
+- most NoSQLs lack true ACID transactions
+
+## CAP Theorem (FINAL)
+> it is impossible for a distributed computer system to simultaneously provide more than two out of three of the following guarantees:
+- Consistency - Every read receives the most recent write or an error
+- Availability - Every request receives a (non-error) response – without guarantee that it contains the most recent write
+- Partition tolerance - The system continues to operate despite an arbitrary number of messages being dropped (or delayed) by the network between nodes
+
+# Normalization & Denormalization
+## Database Normalization
+> relational db designing technique to ensure that data is optimal for ad-hoc querying
+
+## Database Denormalization
+> process of optimizing database by creating redundant data but could cause inconsistency
+
+## Polyglot persistence
+> choose the right persistence option
+
+## Concurrency Control Mechanisms

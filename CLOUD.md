@@ -893,3 +893,198 @@ log file = async
 > choose the right persistence option
 
 ## Concurrency Control Mechanisms
+
+# Email Service
+
+- **Bounce**
+  - fails to deliver
+  - can be sync/async
+  - Types:
+    - **Hard Bounce** - persistent
+    - **Soft Bounce** - temp
+- Amazon SES supports two methods of authentication
+  - Sender Policy Framework (SPF)
+    - indicates to ISPs that you have authorized a service
+  - DomainKeys Identified Mail (DKIM)
+    - a standard that allows sending with cryptographic key
+
+# Domain Name System
+- decentralized system, maintain locally, cacheable
+
+## Loose Coherency
+## Scalability
+## Reliability
+## Dynamicity
+
+## DNS Components
+- Name space (TLDs)
+- Name Servers
+- Resolvers
+
+## Name Space
+- structure of the DNS db
+- each node has a label
+- root node has a **null** label
+
+## Labels
+- case-insensitive, string up to 63 bytes
+- each node must have a label
+
+## Domain Names
+  - Top-Level Domains (TLDs)
+    - **gTLDs** - generic
+    - **ccTLDs** - country code 2 letters, 312 in active
+  - N-level Domains - max depths of 127 levels
+  - Subdomain eg. `coe` .northeastern
+
+## Types of Name Servers
+- Authoritative - maintains the data
+- caching - stores data obtained from autho servers
+
+## Zones
+- Zone delegation
+
+## SOA record *
+- start of authority
+- stores important information about a domain or zone such as the email address of the administrator
+- negative TTL = record doesn't exist
+- suggestion - drop TTL to 1-5 mins
+
+## A Record (address)
+- IP address
+
+## AAAA Record
+- IPv6 address
+
+## CNAME Record
+- canonical name is used in lieu of an A record
+- records points to a domain
+
+## MX Record
+- mail exchange
+
+## TXT Record
+- lets a domain administrator enter text into the Domain Name System (DNS)
+- USES: email spam prevention and domain ownership verification
+
+## NS Record
+- tells the internet where to go find out a domain's IP address
+- typically has multiple records for backup
+
+## CAA Record
+- certification authority authorization
+- if no record, anyone can issue a cert
+
+```
+dig +trace @8.8.8.8 
+```
+
+# Site Reliability Engineering (SRE)
+- discipline that incorporates aspects of SE and applies to operations
+- Automation
+
+## Error Budget
+- A service that’s 99.99% available is 0.01% unavailable. That permitted 0.01% unavailability is the service’s **error budget**
+
+### Measuring Service Risk
+- way of representing risk tolerance is in terms of the acceptable level of unplanned downtime
+
+### Time-based availability
+$$ availability = uptime / (uptime + downtime) $$
+
+## Service Level Objectives - Terminology
+service level indicator
+service level objective - put a boundary for incoming API calls
+Service Level Agreements (SLAs) - contracts between customers and service providers
+
+## Collecting Indicators
+
+
+# Log
+- For the standard levels, we have ALL < TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF.
+
+## Production
+- priority should not be lower that INFO
+
+## Metrics
+### Data Source Types
+- Counters
+- Gauge
+- Timers
+
+## Alerting
+- Level
+  - Low Severity
+  - Moderate Severity - email notification
+  - High Severity - requires human intervention right away
+
+
+## Content Delivery Network (CDN)
+### Benefits
+- Improving website load times
+- Reducing bandwidth costs
+- Increasing content availability and redundancy - non static?
+- Improving website security
+### Use Cases
+- Static Asset Caching
+- Video Streaming
+- Software Distribution
+
+### Origin Server
+- my server that processes and responses incoming internet requests
+
+### CDN Edge Server
+- caching and validation
+- cannot do authentication
+
+### Anycast protocol
+- find the server closest to the user and send requests there
+
+point of exchange
+
+### Negative Caching
+- set different TTL for each status code
+
+## Load Balancing, Auto Scaling & Availability Zones
+### Regions
+
+### Zones
+- deployment area within a region
+
+### Load Balancer (final)
+> device that acts as a reverse proxy and distributes network or application traffic across a number of servers
+
+#### Request Distribution
+- Round Robin - can overload instances
+- Weighted round robin
+- Least connections
+- Least response time
+
+#### Classic Load Balancer
+
+
+- have to configure the listener
+
+#### Internal Classic Load Balancers
+-
+
+#### AWS Classic Load Balancer Features
+- sticky session tells this go to this instance
+- layer 4 (not http) or 7 load balancing
+- not all load balancers tells where the requests are coming from; need real IPs
+
+### Autoscaling
+
+- stateless 
+
+### Scaling Policies
+- Manual Scaling
+- Scheduled Scaling
+- Dynamic Scaling - scale up/down based on params eg. number of users
+
+Scale out = adding more instances
+
+### Scaling Cooldown
+- cooldown period = configurable setting for auto scaling
+- not supported for scheduled scaling
+

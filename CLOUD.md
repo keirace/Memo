@@ -6,6 +6,7 @@
 - [Terraform](#Terraform)
 - [Cloud Storage Solution](#Cloud-Storage-Options)
 - [EBS](#EBS)
+- [CDN](#content-delivery-network-cdn)
   
 ## Fundamentals of Cloud Computing
 
@@ -65,25 +66,25 @@ for  an IT environment to be considered cloud, it must meet the following:
 3. Private cloud
 4. Hybrid cloud 
 
-# DevOps
+## DevOps
 
 - term that focuses on collab between dev and it ops
 
-## The software development lifecycle (SDLC) & Challenges with Self Hosted Applications
+### The software development lifecycle (SDLC) & Challenges with Self Hosted Applications
 
 - Cannot auto push updates, features and bug fixes until IT deploys
 - Vendor and end-users are at mercy of IT team’s availability.
 - low ROI due to infrastructure cost as its not elastic
 - Bad UX
 
-## Benefits of SaaS
+### Benefits of SaaS
 
 - Better ROI
 - less cost for muti-tenant SaaS
 - multiple deployments a day
 - Company manages the infrastructure
 
-## Cloud
+### Cloud
 - low barrier to entry
 - minimal capital
 - no upfront capital expenses
@@ -91,7 +92,7 @@ for  an IT environment to be considered cloud, it must meet the following:
 - Scale with users
 - Control your infrastructure costs
 
-## Practices
+### Practices
 - Key: Collab
 - Development and operations teams coalesce into a functional team
 - **Infrastructure as Code**
@@ -132,7 +133,7 @@ Principles of Infrastructure as Code:
   - Feedback comes from logs, monitoring, alerting and auditing infrastructure
 - **Security**
 
-# IAM
+## IAM
 
 - Features
   - Shared access to your AWS account
@@ -144,13 +145,13 @@ create user -> give user security credentials -> put user into one/more groups -
 - can auth several ways: passwords, key pairs, and X.509 certificates
 - can enforce MFA on users who access AWS console or APIs
 
-# Computer Networking
+## Computer Networking
 
 - 2 types: LAN, WAN made of multiple LANs
   - indirectly connect via switch or router
 - Data transmission rate of a link is measured in bits/second
   
-## 7-layer OSI Model:
+### 7-layer OSI Model:
 
 1. Application Layer - HTTP, FTP, etc.
 2. Presentation Layer - audio and video codes, different image formats such as PNG, JPEG, etc.
@@ -166,7 +167,7 @@ create user -> give user security credentials -> put user into one/more groups -
 - allows ISPs to support more systems with the limited availability of public IPs
 - does not work well with P2P as it requires 2 hosts to communicate directly
   
-## Subnet
+### Subnet
 - class A /8 fixed 0
   - 8 bits for network prefix, 24 bits host address
 - class B /16 fixed 10
@@ -176,7 +177,7 @@ create user -> give user security credentials -> put user into one/more groups -
 	•	Class C: 2,097,152 networks, 254 usable hosts per network
 > Q: 254 usable host addresses, reserving 1 for network and 1 for broadcast address
 
-## VPC
+### VPC
 
 - allows you to create or configure:
   - firewall
@@ -184,7 +185,7 @@ create user -> give user security credentials -> put user into one/more groups -
   - public/private subnets
   - network gateway
 
-## Elastic Network Interfaces
+### Elastic Network Interfaces
 
 - is a virtual network interface that can include the following attributes:
 1. a primary private IPv4 address
@@ -199,43 +200,43 @@ interface for eth0 when you launch an instance
 - Each instance in your VPC has a default network interface, and we cannot detach a primary network interface from an instance
 - You can create and attach an additional network interface to any instance in your VPC. The number of network interfaces you can attach varies by instance type
 
-## Route table
+### Route table
 
 - contains a set of rules, called routes, used to determine where network traffic is directed
 - each subnet must be associated with a route table
   
-## Elastic IP Address
+### Elastic IP Address
 
 - static IPv4 address designed for dynamic cloud computing
   
-## Security Group
+### Security Group
 
 - a security group acts as a virtual firewall for your instance to control inbound and outbound traffic
 - When you launch an instance in a VPC, you can assign up to five security groups to the instance
 - act at the instance level, therefore, each instance in a subnet in your VPC could be assigned to a different set of security groups
 
-# Version Control with Git
+## Version Control with Git
 
-## Local Version Control
+### Local Version Control
 - Revision Control System (RCS)
 - Source Code Control System (SCCS)
 
-## Centralized Version Control
+### Centralized Version Control
 - CVS
 - SVN
 - Perforce
 
-## Distribution Version Control Systems
+### Distribution Version Control Systems
 - Git
 - Mercurial
 - Bazaar
 - Darcs
 
-## Short History of Git
+### Short History of Git
 - Linux kernel project began using a proprietary DVCS called BitKeeper in 2002 but in 2005 the relationship broke down and no longer free
 - Linus Torvalds created Git in 2005 to manage Linux kernel
 
-## Git Has Integrity
+### Git Has Integrity
 - has integrity (checksum)
 - use SHA-1 hash 40-char hex
 ```
@@ -249,7 +250,7 @@ git remote -v
 git fetch
 ```
 
-# Twelve-factor App
+## Twelve-factor App
 > The twelve-factor app is a methodology for building software-as-a-service apps that:
 > - Use **declarative** formats for setup automation
 > - Have a **clean contract** with the underlying operating system, offering **maximum portability** between execution environments;
@@ -257,60 +258,60 @@ git fetch
 > - **Minimize divergence** between development and production, enabling **continuous deployment** for maximum agility;
 > - And can **scale up** without significant changes to tooling, architecture, or development practices.
 
-## Code Base
+### Code Base
 is any single repo
 - There is always a one-to-one correlation between the codebase and the app:
   - if there are multiple codebases: it's a `distributed system` not an app
   - Multiple apps sharing the same code is a violation of twelve-factor. The solution here is to factor shared code into libraries which can be included through the `dependency manager`.
 
-## Dependencies
+### Dependencies
 
 vendoring is important - upstreams can have issues but should not affect our build
 - should explicitly declare and isolate dependencies (defining version of dependency)
 
-## Config
+### Config
 Store config in the environment
 everything that can be configured - leave them null 
 
-## Backing Services
+### Backing Services
 - Treat backing services as attached resources
 - Any service the app consumes over the network as part of its normal operation. Examples include datastores (such as MySQL or CouchDB), messaging/queueing systems (such as RabbitMQ or Beanstalkd), SMTP services for outbound email (such as Postfix), and caching systems (such as Memcached)
 
-## Build, release, run
+### Build, release, run
 - Strictly separate build and run stages
 - A codebase is transformed into a (non-development) deploy through these three stages
 
-## Processes
+### Processes
 - Execute the app as one or more stateless processes, share-nothing
 - Twelve-factor processes are stateless and share-nothing. Any data that needs to persist must be stored in a stateful backing service, typically a database.
 - Some web systems rely on “sticky sessions” – that is, caching user session data in memory of the app’s process and expecting future requests from the same visitor to be routed to the same process.
 
-## Port binding
+### Port binding
 - Export services via port binding
 - The twelve-factor app is completely self-contained and does not rely on runtime injection of a webserver into the execution environment to create a web-facing service. The web app exports HTTP as a service by binding to a port, and listening to requests coming in on that port.
 - use non standard port for dev env (1023 and below run with root user)
 
-## Concurrency
+### Concurrency
 - Scale out via the process model
 - The twelve-factor app scales out by adding more `processes` rather than making existing ones more powerful.
 
-## Disposability
+### Disposability
 - Maximize robustness with fast startup and graceful shutdown
 - keep it simple
 - The twelve-factor app’s processes are disposable, meaning they can be started or stopped at a moment’s notice. This facilitates fast elastic scaling, rapid deployment of code or config changes, and robustness of production deploys.
 
-## Dev/prod parity
+### Dev/prod parity
 - Keep development, staging, and production as similar as possible
 - multiple envs
 - Make the tools gap small
 
-## Logs
+### Logs
 - Treat logs as event streams
 
-## Admin processes
+### Admin processes
 - Run admin/management tasks as one-off processes
 
-# Testing
+## Testing
 
 - Tests serves as good documentation
 - Tests allow for safe refactoring
@@ -333,7 +334,7 @@ everything that can be configured - leave them null
 
 > Q: Reserved ports are `0-1023`
 
-# Linux
+## Linux
 
 - Kernel = operating system
 - No file extensions
@@ -366,7 +367,7 @@ dir
 - /tmp - can interact without becoming superuser
 - /var - logs @ /var/log
 
-## Some commands
+### Some commands
 
 - The **redirection operator** `>` connects to a file while **pipeline operator** `|` connects the output of one command with input of a 2nd command
 - Permission `rwx` = read write execute
@@ -433,7 +434,7 @@ G last page
 /g global search
 ```
 
-# Shell Scripts
+## Shell Scripts
 
 - Shell scripts and functions are both interpreted. Not compiled.
 - Shell scripts and functions are `ASCII` read by shell command interpreter
@@ -450,7 +451,7 @@ G last page
   - A non-zero (1-255 values) exit status means command was failure
   - Use shell variable `?` to get the exit status of the *previously* executed command
 
-## CI
+### CI
 > practice of merging all developer working copies to a shared mainline several times a day.
 > runs unit tests for every commit
 - benefits
@@ -463,7 +464,7 @@ G last page
 
 mvp = minimum viable product eg api only
 
-## Github Actions
+### Github Actions
 > help automate tasks within software development life cycle
 > event-driven
 - **Workflows** - automated procedure inside a repo
@@ -495,7 +496,7 @@ runs-on: ubuntu-latest
 - github actions uses YAML files stored in a dir `.github/workflows` inside repo
 - secrets are limited to `64kb` in size
 
-# Infrastructure as Code
+### Infrastructure as Code
 
 - Challenges with Dynamic Inrfastructure
   - Server Sprawl - the number of servers growing faster than the ability of the team to manage
@@ -517,7 +518,7 @@ runs-on: ubuntu-latest
   - Data managed by applications, logfiles
   - Passwords and other security secrets
 
-# Terraform
+## Terraform
 > The main purpose of the Terraform language is declaring resources
 > A group of resources can be gathered into a module, which creates a larger unit of configuration
 > A resource describes a single infrastructure object
@@ -537,17 +538,17 @@ brew install hashicorp/tap/terraform
 - `terraform state`
 - `terraform destroy`
 
-# Virtualization
+## Virtualization
 
-## Virtual Machine
+### Virtual Machine
 > a tightly isolated software container
 - each self-contained vm is completely independent
 - multiple VMs on a single computer enables OS and apps to run on just 1 physical server (host)
   
-## Hypervisor 
+### Hypervisor 
 > a software decouples VMs from the host and dynamically allocates computing resources to each vm
 
-## Key properties of VMs
+### Key properties of VMs
   - **Partitioning**
     - run multiple OS on 1 physical machine
     - divide system resources between VMs
@@ -560,16 +561,16 @@ brew install hashicorp/tap/terraform
   - **Hardware Independence**
     - provision or migrate any VM to any physical server
 
-## Server Consolidation 
+### Server Consolidation 
 > Using server virtualization, a company can maximize the use of its server resources and reduce the number of servers required
 > vulnerable to failure but improves efficiency and cuts costs
 
-## Virtualization != Cloud 
+### Virtualization != Cloud 
 - can do cloud using virtualization
 - cloud computing describes the delivery of shared computing resources on demand thru the internet
 - we can start virtualizing servers with/without cloud
 
-## EC2
+### EC2
 - Types
   - General Purpose
   - Compute Optimized
@@ -587,15 +588,15 @@ brew install hashicorp/tap/terraform
 - Dedicated Instances - EC3 that run in a VPC on hardware that's dedicated to a single customer
 - Dedicated Hosts - physical EC2 server
 
-### AMI (Amazon Machine Images)
+#### AMI (Amazon Machine Images)
 - provides the information required to launch an EC2 instance
 - can launch multiple instances from a single AMI
 
-### EBS
+#### EBS
 - block level storage
 - data must be quickly accessible
 
-## GCE
+### GCE
 - Types
   - General Purpose
   - Compute Optimized
@@ -615,66 +616,66 @@ brew install hashicorp/tap/terraform
   - recommended when data must be quickly accessible
 - Image - Immutable  - 
 
-## Custom Image
+### Custom Image
 - **Golden Images** - secure, immutable OS images
 - **Environment Parity** - Keep all dev/test/prod environment as similar as possible
 - **Auto-scaling Acceleration** - Launch completely provisioned and configured instances in seconds,
 
-## IOPS 
+### IOPS 
 - are a unit of measure representing input/output operations per
 second
 - capped at 256 KiB for SSD and and 1024 KiB for HDD
 - A single 1,024 KiB I/O operation counts as 4 operations (1,024÷256=4), while 8 contiguous I/O operations at 32 KiB each count as 1 operation (8×32=256). However, 8 random I/O operations at 32 KiB each count as 8 operations. Each I/O operation under 32 KiB counts as 1 operation.
 
-## Security Group
+### Security Group
 - acts as a virtual firewall
 - associate one or more security groups with the instance
 
-## Instance metadata and user data
+### Instance metadata and user data
 - Instance metadata is data about your instance
 - can use instance metadata to access user data that's specified when launching
 
 
-# Cloud Storage Options
+## Cloud Storage Options
 - [Block-level Storage](Block-level-Storage)
 - [Object Storage Service](Object-Storage-Service)
 - [Relationnal Databases](Relational-Databases)
 - [NoSQL Databases](NoSQL-Databases)
 
-## Block-level Storage (EBS)
+### Block-level Storage (EBS)
 - Block-level storage with a disk file system (FAT32, NTFS, ext3, ext4, XFS, and so on) can be used to store files as you do on a personal computer
 - A block is a sequence of bytes and the smallest addressable unit
 - The disk file system manages where files are persisted on the underlying block-level storage (block address)
 - can use block-level storage only in combination with a VM (EC2) instance where the OS runs
 
-### Why do we need EBS?
+#### Why do we need EBS?
 - for persistence for apps like DB
 - MySQL uses system calls to access files so it can't store its files in an object store
 
-### Block-level Storage on AWS
+#### Block-level Storage on AWS
 1. Network Attached Storage (NAS) via EBS service
 2. Instance Storage
 
-### Use Cases
+#### Use Cases
 - databases, data warehousing, big data applications
 - apps that demand the highest IOPS or throughput and low latency with consistent, predictable performance
 
-### EBS Lifetime
+#### EBS Lifetime
 - not part of EC2 instances
 - attached to EC2 via a network connection
 - attached to 0 or 1 EC2 at a time
 
-### Availability
+#### Availability
 - high avail, auto replicated within its availability zone (cannot be outside of its AZ)
 
-### Snapshots
+#### Snapshots
 - saved to Amazon S3
 - stored incrementally: only the blocks that have changed are saved
 
-### Encryption
+#### Encryption
 - provides seamless support for data-at-rest and data-in-transit between EC2 instances and EBS volumes
 
-## Instance Store
+### Instance Store
 - `temporary` block-level storage
 - ideal for temporary storage of information that changes frequently such as `buffers, caches, scratch data` or data that is replicated across a fleet of instances such as a `load-balanced pool of web servers`
 - located on disks that are physically attached to the host computer
@@ -684,12 +685,12 @@ second
 - type that supports 1 instance store volume have `ephemeral0`
 - type that supports 2 instance store volumes have `ephemeral0` and `ephemeral1`, and so on
 
-### Use Cases
+#### Use Cases
 - caching
 - temporary processing
 - applications that replicate data to several servers
 
-### Lifetime
+#### Lifetime
 - persists only during the lifetime of its associated instance
 - data in the store persists if an instance reboots
 - data lost in the following circumstances:
@@ -697,15 +698,15 @@ second
   - instance stops
   - instance termination
 
-### Cost
+#### Cost
 - included in the EC2 instance price, no additional charge
 
-### Encryption
+#### Encryption
 - No out of the box solution for data at rest
 
 Instance store backed volume cannot be “stopped”. They can only be rebooted or terminated
 
-## EFS
+### EFS
 - cannot be the root volume
 - supports NFSv4 and 4.1 making it easy to migrate enterprise apps to AWS
 - can be in multi AZ
@@ -714,78 +715,78 @@ Instance store backed volume cannot be “stopped”. They can only be rebooted 
 applications and applications that concurrently access data from
 multiple EC2 instances and that require substantial levels of aggregate throughput and input/output operations per second (IOPS)
 
-### EFS Use Case
+#### EFS Use Case
 - Big Data and analytics
 - Media processing workflows
 - Content management
 - Web serving
 - Home directories
 
-## Object Storage Service
+### Object Storage Service
 - Each object consists of a globally unique identifier, some metadata and data
 
-## S3 (Simple Storage Service)
+### S3 (Simple Storage Service)
 - unlimited storage space
 - highly available and durable
 - object can be 5TB or less
 - access with RESTful APIs
 - strongly consistent
 
-## Tiers/Classes
+### Tiers/Classes
 - **S3 (standard)** - hight avail & dura stored redundantly
 - **S3 - IA** - For data that is accessed less frequently but requires rapid access when needed
 - **Reduced Redundancy Storage** - hight avail & dura over a given year
 - **Glacier** - Archival only, 3-5 hrs to retrieve
 
-## S3 Use Cases
+### S3 Use Cases
 - ranging from simple storage repository for backup & recovery to primary storage for some of the most cutting-edge cloud-native applications in the market today and everything in between.
 
-## S3 Buckets
+### S3 Buckets
 - every object resides in a bucket
 - unique names for diff REST endpoints
 - globally unique name
 
-### Event Notifications
+#### Event Notifications
 - created event
 - removed event
 - reduced redundancy storage object lost event
 revenue - cost
 
-### Bucket Versioning
+#### Bucket Versioning
 - By default, S3 versioning is disabled for every bucket
 - A versioning-enabled bucket can have multiple versions of objects in the bucket
 
-### Data Lifecycle Management
+#### Data Lifecycle Management
 - rules allow you to define actions you want amazon s3 to take during an object's lifetime such as:
   - transition objects to another storage class
   - archive objects
   - delete objects after a specified period of time
 
-###  Object Tagging
+####  Object Tagging
 - S3 object tags are key-value pairs 
 - can create IAM policies, setup S3 lifecycle policies, and customize storage metrics
 - these tags can manage transitions between storage classes and expire objects in the background
 
-### Encryption
+#### Encryption
 - **SSE-S3** S3 will encrypt data at rest and manage the encryption keys
 - **SSE-C (Customer-Provided keys)** encrypt data at rest with custom encryption keys
 - **SSE-KMS** encrypt data at rest with keys in AWS Key management service
 
-### Cross-region replication
+#### Cross-region replication
 - auto, async copying of objects across buckets in diff AWS regions
 
-### Querying S3
+#### Querying S3
 - doesn’t offer query capabilities to retrieve specific obj
 - need to know the exact `bucket name` and `key`
 - can't be used as a db or search engine by itself
 - can be paired with DynamoDB, Cloudsearch, RDS to index and query metadata about S3 buckets and objects
 
-### Not suited for file system
+#### Not suited for file system
 - flat namespace - use EFS instead
 
-## Relational Database (RDBMS)
+### Relational Database (RDBMS)
 
-### Transactions
+#### Transactions
 - RDBMS must support **ACID** transactions to operate efficiently
   - Atomicity
     - all or nothing
@@ -797,7 +798,7 @@ revenue - cost
     - transaction/result stored permanently -> able to provide a given time and restore
 log file = async
 
-### Backups of AWS RDS
+#### Backups of AWS RDS
 - the restored version of the database will be a `new RDS instance` with a `new endpoint`
 - 2 types
   - **automated backups**
@@ -810,91 +811,91 @@ log file = async
     - manual
     - stored even after the original RDS instance deletion
 
-### RDS Multi-AZ Deployments
+#### RDS Multi-AZ Deployments
 - When provisioning a multi-AZ DB instance, Amazon RDS auto creates a **primay DB instance** and synchronously replicates the data to a **standby instance in a different AZ**
 - RDS performs an auto failover to the standby in case of infrastructure failure, can resume as soon as the failover is complete and using the same endpoint
 
-### RDS Read Replicas
+#### RDS Read Replicas
 - enhance performance and durability for db instances
 - easy to elastically scale out beyond the capacity constraints of a single DB instance for read-heavy db workloads
 - can create 1 or more replicas
 
 > vertical scaling for persistent storage system
 
-## NoSQL
+### NoSQL
 - schema-less
 - runs well on cluster
 - most NoSQLs lack true ACID transactions
 - Scaled out horizontally (linearly) by adding more processors
 
-### Value of Relation Database
+#### Value of Relation Database
 - store large amounts of persistent data
 - concurrency
 - standard model
 - ACID
 
-### Not good side of RDBMS
+#### Not good side of RDBMS
 - **Impedance mismatch** - diff between relational model and in-mem data structure
 - mediocre **horizontal** scaling support
 
-### Storing and retrieving data
+#### Storing and retrieving data
 - key-value (DynamoDB)
 - graph
 - column-family (Cassandra) 
   - think of spreadsheets
 - document (MongoDB)
 
-## CAP Theorem (FINAL)
+### CAP Theorem (FINAL)
 > it is impossible for a distributed computer system to simultaneously provide more than two out of three of the following guarantees:
 - **Consistency** - Every read receives the most recent write or an error
 - **Availability** - Every request receives a (non-error) response – without guarantee that it contains the most recent write
 - **Partition tolerance** - The system continues to operate despite an arbitrary number of messages being dropped (or delayed) by the network between nodes
 
-### Most NoSQL stores lack true ACID transactions
+#### Most NoSQL stores lack true ACID transactions
 
-### NoSQL Databases & Consistency
+#### NoSQL Databases & Consistency
 - NoSQL db offer "Eventual Consistency" in which changes are propagated to all nodes 'eventually'
 - queries for data might not return updated data immediately or might result in reading data that is not accurate, a problem known as **stale reads**
 
-### Polyglot Persistence
+#### Polyglot Persistence
 - choosing the right persistence option for task at hand
 
-### Concurrency Control Mechanisms
+#### Concurrency Control Mechanisms
 - Optimistic - delay the checking
 - Pessimistic - block an operation of a transaction
 
-### Write-Write Conflict
+#### Write-Write Conflict
 
-### Read-Write Conflict
+#### Read-Write Conflict
 
-### Version Stamps
+#### Version Stamps
 - A field that changes every time the underlying data in the record changes
 
-### Single Server (Distribution Model)
+#### Single Server (Distribution Model)
 - One machine handles all reads and writes to the database
 
-### Sharding (Distribution Model)
+#### Sharding (Distribution Model)
 - data is partitioned across different nodes
 
-### Primary/Secondary Nodes Replication (Distribution Model)
+#### Primary/Secondary Nodes Replication (Distribution Model)
 - replicate data across multiple nodes
 
-### Peer-to-Peer Replication (Distribution Model)
+#### Peer-to-Peer Replication (Distribution Model)
 - no master node in peer-to-peer replication
 
-# Normalization & Denormalization
-## Database Normalization
+## Normalization & Denormalization
+### Database Normalization
 > relational db designing technique to ensure that data is optimal for ad-hoc querying
 
-## Database Denormalization
+### Database Denormalization
 > process of optimizing database by creating redundant data but could cause inconsistency
 
-## Polyglot persistence
+### Polyglot persistence
 > choose the right persistence option
 
-## Concurrency Control Mechanisms
+### Concurrency Control Mechanisms
 
-# Email Service
+## Email Service
 
 - **Bounce**
   - fails to deliver
@@ -908,70 +909,70 @@ log file = async
   - DomainKeys Identified Mail (DKIM)
     - a standard that allows sending with cryptographic key
 
-# Domain Name System
+## Domain Name System
 - decentralized system, maintain locally, cacheable
 
-## Loose Coherency
-## Scalability
-## Reliability
-## Dynamicity
+### Loose Coherency
+### Scalability
+### Reliability
+### Dynamicity
 
-## DNS Components
+### DNS Components
 - Name space (TLDs)
 - Name Servers
 - Resolvers
 
-## Name Space
+### Name Space
 - structure of the DNS db
 - each node has a label
 - root node has a **null** label
 
-## Labels
+### Labels
 - case-insensitive, string up to 63 bytes
 - each node must have a label
 
-## Domain Names
+### Domain Names
   - Top-Level Domains (TLDs)
     - **gTLDs** - generic
     - **ccTLDs** - country code 2 letters, 312 in active
   - N-level Domains - max depths of 127 levels
   - Subdomain eg. `coe` .northeastern
 
-## Types of Name Servers
+### Types of Name Servers
 - Authoritative - maintains the data
 - caching - stores data obtained from autho servers
 
-## Zones
+### Zones
 - Zone delegation
 
-## SOA record *
+### SOA record *
 - start of authority
 - stores important information about a domain or zone such as the email address of the administrator
 - negative TTL = record doesn't exist
 - suggestion - drop TTL to 1-5 mins
 
-## A Record (address)
+### A Record (address)
 - IP address
 
-## AAAA Record
+### AAAA Record
 - IPv6 address
 
-## CNAME Record
+### CNAME Record
 - canonical name is used in lieu of an A record
 - records points to a domain
 
-## MX Record
+### MX Record
 - mail exchange
 
-## TXT Record
+### TXT Record
 - lets a domain administrator enter text into the Domain Name System (DNS)
 - USES: email spam prevention and domain ownership verification
 
-## NS Record
+### NS Record
 - tells the internet where to go find out a domain's IP address
 - typically has multiple records for backup
 
-## CAA Record
+### CAA Record
 - certification authority authorization
 - if no record, anyone can issue a cert
 
@@ -979,40 +980,40 @@ log file = async
 dig +trace @8.8.8.8 
 ```
 
-# Site Reliability Engineering (SRE)
+## Site Reliability Engineering (SRE)
 - discipline that incorporates aspects of SE and applies to operations
 - Automation
 
-## Error Budget
+### Error Budget
 - A service that’s 99.99% available is 0.01% unavailable. That permitted 0.01% unavailability is the service’s **error budget**
 
-### Measuring Service Risk
+#### Measuring Service Risk
 - way of representing risk tolerance is in terms of the acceptable level of unplanned downtime
 
-### Time-based availability
+#### Time-based availability
 $$ availability = uptime / (uptime + downtime) $$
 
-## Service Level Objectives - Terminology
+### Service Level Objectives - Terminology
 service level indicator
 service level objective - put a boundary for incoming API calls
 Service Level Agreements (SLAs) - contracts between customers and service providers
 
-## Collecting Indicators
+### Collecting Indicators
 
 
-# Log
+## Log
 - For the standard levels, we have ALL < TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF.
 
-## Production
+### Production
 - priority should not be lower that INFO
 
-## Metrics
-### Data Source Types
+### Metrics
+#### Data Source Types
 - Counters
 - Gauge
 - Timers
 
-## Alerting
+### Alerting
 - Level
   - Low Severity
   - Moderate Severity - email notification
@@ -1021,20 +1022,24 @@ Service Level Agreements (SLAs) - contracts between customers and service provid
 
 ## Content Delivery Network (CDN)
 ### Benefits
-- Improving website load times
+- Improving website load times (latency)
 - Reducing bandwidth costs
 - Increasing content availability and redundancy - non static?
-- Improving website security
+- Improving website security, protect against DDoS (Distributed Denial of Service)
+
 ### Use Cases
 - Static Asset Caching
 - Video Streaming
 - Software Distribution
+- Security and DDOS Protection
+- API Acceleration
 
 ### Origin Server
-- my server that processes and responses incoming internet requests
+- server that processes and responses incoming requests
+- data that's not not cached
 
-### CDN Edge Server
-- caching and validation
+### Edge Server
+- caching and validation near users
 - cannot do authentication
 
 ### Anycast protocol
@@ -1047,21 +1052,28 @@ point of exchange
 
 ## Load Balancing, Auto Scaling & Availability Zones
 ### Regions
+- static
 
 ### Zones
 - deployment area within a region
+- different zones provider has different definition
+- most have 2 zones at launch time
+- consisted of 1 or more discrete data center
 
 ### Load Balancer (final)
 > device that acts as a reverse proxy and distributes network or application traffic across a number of servers
+> has health checks, traffic can be routed away from unhealthy servers
 
 #### Request Distribution
-- Round Robin - can overload instances
-- Weighted round robin
-- Least connections
-- Least response time
+- layer 4 Transport (IP, TCP, FTP, UDP) or 7 Application load balancing
+- Standard algorithms:
+  - Round Robin - equal shares but can overload instances
+  - Weighted round robin
+  - Least connections
+  - Least response time
 
 #### Classic Load Balancer
-
+- sits in VPC
 
 - have to configure the listener
 
@@ -1069,9 +1081,14 @@ point of exchange
 -
 
 #### AWS Classic Load Balancer Features
-- sticky session tells this go to this instance
-- layer 4 (not http) or 7 load balancing
+- sticky session binds users to a specific instance
 - not all load balancers tells where the requests are coming from; need real IPs
+  
+### Application Load Balancer
+- handle HTTP/HTTPS requests
+
+#### Network Load Balancer
+- TCP/UDP traffic
 
 ### Autoscaling
 
@@ -1088,3 +1105,113 @@ Scale out = adding more instances
 - cooldown period = configurable setting for auto scaling
 - not supported for scheduled scaling
 
+## Microservices
+breaks monolitic into microservices to easily manage small teams
+autonomous
+higher cost - multiple instances
+servies exposed an API
+isolated services
+
+### Good service
+- Loose Coupling - a change to one not require change to another
+- High Cohesion- related behavior sit together
+
+### Benefits
+- **Technology Heterogeneity** - can choose any language, framework, os
+- **Resiliency** – A service failure does not cascade into total system failure
+- **Scaling** – Scale on the services that need to be scaled
+- **Ease of Deployment**
+- **Composability**
+- **Optimizing for Replaceability**
+
+## Event-driven Architecture
+### Pub/Sub
+> async and scalable messaging service
+> broadcasting events
+
+#### Types
+- Pub/Sub service
+  - synchronous replication to at least 2 zones
+- Pub/Sub Lite service
+  - lower cost, lower reliability 
+  - offers zonal/regional storage
+  - zonal stores in only 1 zone, regional replicate to 2nd zone asynchronously
+
+#### Components
+- Publisher (Producer) - generate the event and put in the queue
+- Message
+- Topic - represents a feed of messages
+- Schema - data format, generally no schema, text by default
+- Subscription
+- Subscriber (Consumer) - has to subscribe to be notified
+
+#### Status
+- Acknowledged messages (acked)
+- Unacknownledged messages (unacked)
+- Negatively acknowledged messages (nacked) causes pub/sub to redeliver it immediately
+
+#### publish and subscribe pattern
+- fan in (many to one)
+  - multiple `publisher applications` publish to a single `topic`
+- fan out (one to many)
+  - a single/multiple `publisher apps` publish to a single `topic` wherein the topic is attached to multiple `substriptions`. each subscription is connected to a <ins>single</ins> `subcriber app`.
+- load balanced (many to many)
+  - multiple `publisher apps` publish to a single topic. This topic is attached to a `single subscription` of which connected to <ins>multiple</ins> `subscriber apps`.
+
+### Amazon Simple Notification Service (SNS)
+#### Common scenearios
+- Application and system alerts
+- Push email and text messaging
+- mobile push notifications
+- message durability 
+  - Amazon SNS porvides durable storage of all messages. It stores mulitple copies of message to disk in multiple AZs.
+
+### Amazon Simple Queue Service (SQS)
+- Standard Queues
+  - Unlimited Throughput
+    - nearly unlimited number of transactions per second (TPS) per API action
+  - At-least-once delivery
+    - occasionally more than one copy of a message is delivered
+  - Best-effort ordering
+    - messages might be delivered in an order different from which they were sent
+- FIFO Queues
+  - High Throughput
+    - by default, FIFO queue supports <= 300 msg/s
+  - Exactly-once processing
+    - deliver once and remain until a consumer processes and deletes it.
+  - First-in-first-out delivery
+    - the order is strictly preserved
+
+## Serverless Computing
+> known as function as a service (FaaS)
+> Reactive computing design
+
+### Benefits
+- No servers to manage
+- Continuous scaling
+- Never pay for idle servers
+- Reduced operational costs
+
+### Drawbacks
+- Loss of Server optimizations
+- No in-server state for Serverless FaaS
+- Startup Latency
+- Vendor Lockin
+
+### Units of Scale
+- **Virtual Machines**
+  - machine as the unit of scale
+  - abstracts the hardware
+- **Containers**
+  - application as the unit of scale
+  - abstract the OS
+- **Serverless**
+  - functions as the unit of scale
+  - abstract the language runtime
+
+### Use Cases
+- Event driven programming
+- scheduled events
+- on-demand lambda function invocation
+
+### AWS Lambda

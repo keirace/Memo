@@ -28,3 +28,7 @@ Q: Average time in last 5 mins
 what should not be managed in VCS?
 
 Collection of infrastructure servers unit. Could be single or multiple.
+
+
+internal lb
+http data lb layer

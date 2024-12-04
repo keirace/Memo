@@ -1236,7 +1236,7 @@ runtime = linux
   - **Availibility** accessible 24/7
   - **Threat**
   - **Vulnerability**
-  - **Attack Vectors** path or means by which a hacker can gain access to a computer or network server to deliver a paylaod or malicious outcome
+  - **Attack Vectors** path or means by which a hacker can gain access to a computer or network server to deliver a payload or malicious outcome
   - **Risk**
   - **Security Controls**
   - **Threat agent** entity that poses a threat
@@ -1259,11 +1259,41 @@ runtime = linux
   - Symmetric same key
   - Asymmetric private and public key
 - Web-based data transmission
-  - SSL/TLS TLS uses asymmetric encryption (slower) only for its key exchange, then switches to symmetric
+  - SSL/TLS TLS uses asymmetric encryption (slower) only for its `key exchange`, then switches to symmetric
   - Most TLS supports **RSA** as the main asym encryption cipher, while **Triple-DES** and **AES** are supported for sym
-- Hashing one way 40 chars Git uses SHA-1
+- Hashing one way, Git uses SHA-1, Recipient applies the same hash function to the message to verify that the produced message digest is identical to the one that accompanied the message
 - Digital Signature privides data auth and integrity
-- Hardened Server Images stripping unnecesaary software from a system to limit potential vulnerabilities
+  - a message is assigned a digital signature prior to transmission, which is then rendered invalid if the message experiences any subsequent, unauthorized modications
+  - both **hashing** and **asymmetrical encryption** are involved in the creation of a digital signature, which essentially exists as a message digest that was encrypted by a private key and appended to the original message
+  - The recipient verifies the signature validity and uses the corresponding public key to decrypt the digital signature, which produces the message digest
+  - The hashing mechanism can also be applied to the original message to produce this message digest
+- Hardened Server Images stripping unnecessary software from a system to limit potential vulnerabilities that can be exploited by attackers
+  - removing redundant programs, closing unecessary server ports, and disabling unused services, internal root accounts, and guest access are all hardening
+- User Input: Users can submit arbitrary input, the application must assume that all input is potentially malicious
+  - users can interfere with any piece of data transmited between the client and the server, including request params, cookies, and HTTP headers
+- Attack Vectors
+  - the majority of attacks against web applications involve sending crafted input to the server to cause some event that was not expected by the app's designer
+
+### Core Defense Mechanisms
+- Authentication
+- Session Management 
+  - issuing the user a token that identifies the session
+  - in terms of attack surface, the session management mech is highly dependent on the security of its tokens, and the majority of attacks against it seek to compromise the tokens issued to other users
+- Access Control
+  - an application might support numerous different user roles 
+  - because of the complex nature of typical access control requirements, this mech is a frequent source of security vulnerabilities that enable an attacker to gain unauthorized access to data and functionality
+- Handling User Input
+
+### Handling Hackers
+- Mapping the application
+- Bypassing client side controls
+- Attacking authentication
+- Code injection into interpreted languages
+- Injecting code in SQL
+- Cross-site scripting (XSS) enables attackers to inject client-side scripts into web pages viewed by other users
+  - may be used by attackers to bypass access controls such as same-origin policy
+- Cross-site request forgery (CSRF) forces end user to execute unwanted actions on a web application in which they're currently authenticated
+  - specifically targets state-changing requests, not theft of data, since the attacker has no way to see the reponse to the forged request
 
 a password has to be hashed with salt, each entry must be unique
 

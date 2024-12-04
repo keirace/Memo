@@ -7,6 +7,7 @@
 - [Cloud Storage Solution](#Cloud-Storage-Options)
 - [EBS](#EBS)
 - [CDN](#content-delivery-network-cdn)
+- [Security](#security)
   
 ## Fundamentals of Cloud Computing
 
@@ -1215,3 +1216,56 @@ isolated services
 - on-demand lambda function invocation
 
 ### AWS Lambda
+
+## Docker
+runtime = linux
+### Dockerfile
+- execution steps
+  - LABEL
+  - ADD = copy files from local to docker
+  - ENV
+  - EXPOSE = does not actually publish the port
+  - CMD provide defaults for an executing container. there can be only 1 CMD.
+  - ENTRYPOINT parse args at runtime?
+
+## Security
+- Terms
+  - **Confidentiality** only authorized
+  - **Integrity** guarantee the same data
+  - **Authenticity** authorized source
+  - **Availibility** accessible 24/7
+  - **Threat**
+  - **Vulnerability**
+  - **Attack Vectors** path or means by which a hacker can gain access to a computer or network server to deliver a paylaod or malicious outcome
+  - **Risk**
+  - **Security Controls**
+  - **Threat agent** entity that poses a threat
+  
+- Types of cert
+  - extended validation cert - seen in banking website
+  - domain validation cert - typical one
+
+`bcrypt` - generate a salt for each entry, has hashing round
+
+### Cloud Security Threats
+- Traffic Eavesdropping - wireshark
+- Malicious Intermediary - man in the middle
+- Insufficient Authorization - attacker gaining direct access to IT resources that were implemented under the assumption that they would only be accessed by trusted consumer programs
+- Denial of services (DoS) - overload the resources for ransom
+- Flawed implementations 
+
+### Security Mechanisms
+- Encryption
+  - Symmetric same key
+  - Asymmetric private and public key
+- Web-based data transmission
+  - SSL/TLS TLS uses asymmetric encryption (slower) only for its key exchange, then switches to symmetric
+  - Most TLS supports **RSA** as the main asym encryption cipher, while **Triple-DES** and **AES** are supported for sym
+- Hashing one way 40 chars Git uses SHA-1
+- Digital Signature privides data auth and integrity
+- Hardened Server Images stripping unnecesaary software from a system to limit potential vulnerabilities
+
+a password has to be hashed with salt, each entry must be unique
+
+SQL injection = #1 attack
+Cross-site scripting - eg. using iframe to put a mimicking site to record creds

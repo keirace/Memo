@@ -25,9 +25,14 @@ Q: Average time in last 5 mins
   ```
   - answer: 2.26
 
-what should not be managed in VCS?
+Q: What should not be managed in VCS?
+- **Configuration files** (e.g., `/etc/hosts`, `/etc/passwd`)
+- **Log files** (e.g., `/var/log/*`)
+- **Software packages** (e.g., `/usr/local/bin/*`)
 
-Collection of infrastructure servers unit. Could be single or multiple.
+Q: ___ is a collection of infrastructure elements that are defined as a unit and can be managed as a single entity.
+- answer: **Stack**
+
 
 
 internal lb

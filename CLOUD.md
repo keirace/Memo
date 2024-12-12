@@ -1299,3 +1299,138 @@ a password has to be hashed with salt, each entry must be unique
 
 SQL injection = #1 attack
 Cross-site scripting - eg. using iframe to put a mimicking site to record creds
+
+## Architecturing for the cloud
+### Lift & Shift
+- moving an application to the cloud without making any changes to the application itself
+- the application is simply moved from one environment to another, with the same architecture and configuration
+
+### On-premises vs Cloud
+cloud computing differs from a traditional on-premises environment in several key ways
+- **global and scalability**: cloud computing allows for the rapid scaling of resources to meet changing demands, whereas
+- **options for cost optimization**: cloud computing offers a variety of pricing models and options for cost optimization, such as reserved instances and spot
+- **built-in security**: cloud computing provides a range of built-in security features, such as encryption, firewalls, and access
+- **flexible**: cloud computing allows for the use of a variety of different services and tools, whereas on-premises
+- **managed services**
+- **various operating models**
+
+### IT Assets as Provisioned Resources
+- In a traditional computing environment, capacity are provisioned based on an estimate of a theoretical maximum peak. This can result in periods where expensive resources are sitting idle or occasions of insufficient capacity to meet demand.
+- With cloud computing, resources are provisioned on demand, and the cost is only incurred when the resources are actually being used. Components can be instantiated within seconds. You can treat these as temporary resources, and they can be scaled up or down as needed. Introducing the ability to fail fast and iterate quickly.
+
+### Global, Available and scalable capacity
+- for global applications, you can reduce latency to end users around the world by using Content Delivery Networks (CDNs).
+
+### Architecturing for cost
+- when provisioning cloud computing environment, <ins>optimizing for cost</ins> is a <ins>fundamental design</ins> tenant for architects
+- when selecting a solution, you should not only focus on the <ins>functional architecture</ins> and feature set, <ins>but on the cost profile</ins> of the solutions you select
+
+
+### Scalability
+- <ins>scale in a linear manner</ins> when <ins>adding extra resources results</ins> in at least a <ins>proportional increase in ability to serve additional load</ins>
+- there are 2 ways to scale: <ins>horizontal scaling</ins> (add more servers) and <ins>vertical
+
+### Scaling Vertically
+- can eventually reach a limit, and it is not always a cost-efficient or highly available approach
+- Very easy to implement and can be sufficient for many use cases in the short term
+
+### Scaling Horizontally
+- a great way to build internet-scale applications that leverage the elasticity of cloud computing.
+- not all architectures are designed to distribute their workload to multiple resources
+
+### Stateless Application
+- when user interact with application, they will often perform a series of interactions that form a session
+- a session is unique data for users that persists between requests while they are interacting with the application
+- stateless applications can scale horizontally because of any available resource can service any request
+- those services do not need to be aware of the presence of their peers - all that is required is a way to distribute the workload to them
+
+### Distribute load to multiple nodes
+- to distribute load to multiple nodes in your environment, you can choose either a <ins>push or pull</ins> model
+- with a <ins>push</ins> model, you can use elastic load balancing (ELB) to distribute a workload. ELB routes incoming application requests across multiple EC2 instances.
+- alternatively, you can use <ins>Amazon Route 53<ins> to implement a <ins>DNS round robin</ins> distribute traffic across multiple nodes. In this case, DNS responses return the IP addresses of multiple nodes, and the client can choose which node to use.
+- dont use RDS, if you use a very dynamic auto scaling group, DNS can change very quickly
+
+### Stateless components
+- store session is database or external cache
+- store files in Object Storage (S3) or a distributed file system (EFS)
+
+### Stateful components
+- databases are stateful. In addition, many legacy applications were designed to run on a single server by relying on local compute resources. 
+- Other use cases might require client devices to maintain a connection to a server for extended periods of time. For example, real-time multiplayer gaming must offer multiple players a consistent view of the game world with very low latency.
+- You might still be able to scale those components horizontally by distributing the load to multiple nodes with <ins>session affinity</ins>. In this model, you bind all the transactions of a session to a specific compute resource. But this model does have some limitation, existing session do not directly benefit from the newly launched compute nodes. More importantly, session affinity cannot be guaranteed, if the compute node that is handling a session fails, the session will be lost.
+
+### Implement Session Affinity
+- For HTTP and HTTPS traffic, you can use the sticky sessions feature of an Application Load Balancer to bind a user’s session to a specific instance
+- With this feature, an Application Load Balancer will try to use the same server for that user for the duration of the session
+
+### Distributed Processing
+- Use cases: the processing of very large amounts of data
+- Devide the data into smaller chunks and process them in parallel
+
+### Disposable Resources Instead of Fixed Servers
+- Another issue with fixed, long-running servers is <ins>configuration drift</ins>. Changes and software patches applied through time can result in untested and heterogeneous configurations across different environments. You can solve this issue with <ins>immutable infrastructure</ins>. Immutable infrastructure is a design principle that ensures that the configuration of a server is fixed and unchangeable. This is achieved by creating a new server image for each change, and then using that image to launch a new server. The old server is then terminated. This enables resources to always be in a consistent (and tested) state and makes rollbacks easier to perform. This is more easily supported with stateless architecture.
+
+### Bootstrapping
+- You can set up new EC2 instances with user <ins>data scripts</ins> and <ins>cloud-init directives</ins>
+- When you launch an AWS resource such as an EC2 instance or Amazon Relational Database Service (Amazon RDS) DB instance, you start with a default configuration.
+- You can then execute automated bootstrapping actions, which are scripts that install software or copy data to bring that resource to a particular state
+- You can parameterize configuration details that vary between different environments (such as production or test) so that you can reuse the same scripts without modifications
+
+### Golden Images
+- Certain AWS resource types, such as EC2 instances, Amazon RDS DB instances, and Amazon Elastic Block Store (Amazon EBS) volumes, can be launched from a golden image, which is a snapshot of a particular state of that resource.
+- When compared to the bootstrapping approach, a golden image results in faster start times and removes dependencies 
+
+### Hybrid
+- You can also use a combination of the two approaches: some parts of the configuration are captured in a golden image, while others are configured dynamically through a bootstrapping action
+
+### Service Discovery
+- Service discovery is the process of finding and accessing services in a distributed system
+- For an Amazon EC2-hosted service, a simple way to achieve service discovery is through <ins>ELB</ins> because each load balancer gets its own hostname, you can consume a service through a stable endpoint. This can be combined with DNS and private Amazon route 53 zones, so that the particular load balancer's endpoint can be consumed at any time.
+- Another option is to use <ins>service registration and discovery method</ins> to allow retrieval of the endpoint IP addressed and port number of any service.
+- if load balancers are not used, service discovery should also allow options such as health checks. Amazon Route 53 supports auto naming to make it easier to provision instances for microservices. Auto naming lets you create DNS records based on a configuration you define.
+
+### Asynchronous Integration
+- another form of loose coupling between services
+- It involves one component that generates events and another that consumes them
+- The two components do not integrate through direct point-to-point interaction but usually through an intermediate durable storage layer, such as a queue or a streaming data platform
+
+### Databases
+- it is not uncommon for applications to run on top of a polyglot data layer on cloud, choosing the best database for each specific use case
+
+### Database Scalability
+- <ins>Read replicas</ins> are separate database instances that are <ins>replicated asynchronously</ins>. As a result, they are subject to <ins>replication lag</ins> and might be missing some of the latest transactions.
+- For read-heavy applications, you can also horizontally scale beyond the capacity constraints of a single db instance by creating one or more read replicas.
+- Read replicas can not accept any write queries
+- Sharding is another technique to scale databases. Sharding involves splitting the data across multiple database instances, each of which is responsible for a subset of the data. This can be done based on a variety of criteria, such as the range of values in a particular column or the geographic location of the data. Sharding can be done manually or automatically. Automatic sharding is typically done through a process called <ins>schemaless design</ins>, where the schema of the database is not defined upfront but is instead determined dynamically based on the data being stored. This can make it easier to scale the database horizontally, but it can also make it more difficult to manage the database and ensure data consistency.
+- Application designers need to consider which queries have tolerance to slightly stale data. They can be executed on read replicas, while other queries that require the latest data can be executed on the primary database instance.
+
+### High Availability
+- <ins>Multi-AZ deployments</ins> are a common technique to ensure high availability of databases. In a multi-AZ deployment, the database is deployed across multiple Availability Zones (AZs ) within a region. This can help ensure that the database remains available even if one AZ becomes unavailable due to a failure or maintenance.
+- In case of failure of the primary node, Amazon RDS performs an automatic failover to the standby node. This ensures that the database remains available and that the application can continue to operate. When a failover is performed, there is a short period during which the primary node is not accessible.
+- Resilient applications can be designed for graceful failure by offering reduced functionality during this period. This can be achieved by implementing a <ins>read-only mode</ins> by using read replicas.
+- Amazon Aurora provides multi-master capability to enables reads and writes to be scaled across multiple AZs and supports cross-region replication.
+
+### NoSQL
+- trade some of the query and transaction capabilities of relational databases for the ability to scale horizontally and handle large amounts of unstructured data
+
+### Single point of failure
+- <ins>Single point of failure</ins> is a component that, if it fails, will cause the entire system to fail. This can be a single server, a single database, or a single network connection. Single points of failure can be avoided by implementing redundancy and failover mechanisms.
+
+### Redundancy
+- redundancy can be implemented in either standy or active mode
+- in <ins>standby mode</ins>, the redundant component is not used until the primary component fails, typically used for databases and other components that require a high degree of consistency and reliability
+- in <ins>active redundacy</ins>, requests are distributed across multiple redundant compute components, when one of them fails, others can absorb a larger share of workload
+- active redundancy can achieve better usage and affect a better population when there's a failure
+
+### Detect failure
+- You can use services such as ELB and Amazon Route 53 to configure health checks and mask failure by routing traffic to healthy endpoints
+- You can replace unhealthy nodes automatically using Auto Scaling or by using the Amazon EC2 auto-recovery
+
+### Caching
+- stores previously calculated data for future use
+- improves application performance and increase the cost efficiency
+- can be applied at multiple levels, such as in memory, in database, or in front of the database
+
+### Application data caching
+- when the result set is not found in the cache, the application can calculate it, or retrieve the data from the database and store it in the cache, or slowly mutating third-party content and store it in the cache
+- when the result is found in the cache, the application can return the cached result, which improves the latency for end users and reduces load on back-end systems

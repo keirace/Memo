@@ -1049,6 +1049,7 @@ Service Level Agreements (SLAs) - contracts between customers and service provid
 point of exchange
 
 ### Negative Caching
+- is a technique used to improve the performance of a web application by caching the results of a request that returns error
 - set different TTL for each status code
 
 ## Load Balancing, Auto Scaling & Availability Zones
@@ -1064,6 +1065,12 @@ point of exchange
 ### Load Balancer (final)
 > device that acts as a reverse proxy and distributes network or application traffic across a number of servers
 > has health checks, traffic can be routed away from unhealthy servers
+> served as a single point of entry for all incoming traffic
+
+#### Features
+- Asymmetric load
+- Distributed Denial of Service (DDoS) attack protection
+- HTTP compression 
 
 #### Request Distribution
 - layer 4 Transport (IP, TCP, FTP, UDP) or 7 Application load balancing
@@ -1079,7 +1086,8 @@ point of exchange
 - have to configure the listener
 
 #### Internal Classic Load Balancers
--
+- The DNS name of an internal load balancer is publicly resolvable to the private IP addressed of the nodes
+- can only routes requests from clients with access to the load balancer's VPC
 
 #### AWS Classic Load Balancer Features
 - sticky session binds users to a specific instance
@@ -1092,7 +1100,6 @@ point of exchange
 - TCP/UDP traffic
 
 ### Autoscaling
-
 - stateless 
 
 ### Scaling Policies

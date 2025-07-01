@@ -1,5 +1,0 @@
-## Jagadeesh Vasudevamurthy ####
-digraph g {
-	edge [dir=none, color=red]
-	0 -> 1
-}
